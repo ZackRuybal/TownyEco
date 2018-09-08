@@ -1,3 +1,8 @@
+// Created by Lukas Mansour on the 2018-09-08 at 18:55:33
+// This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivative International License. (Short Code: CC BY-NC-ND 4.0 )
+// To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/
+// Or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
 package de.articdive.townyeco.lang;
 
 import de.articdive.commentedconfiguration.config.file.CommentedConfig;
@@ -21,24 +26,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/*
- * Created by Lukas Mansour on the 7/29/18 9:48 PM.
- * This work is licensed under the "Creative Commons Attribution-NonCommercial-NoDerivative International License". (Short Code: CC BY-NC-ND 4.0 )
- * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/ or send a letter to
- * Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
- */
-
 public class LanguageHandler {
 	private static HashMap<Language, CommentedConfig> languages = new HashMap<>();
 	private static List<Language> playerLanguages = new ArrayList<>();
 	private static Language pluginLanguage;
 	private static TownyEco main = TownyEco.getPlugin(TownyEco.class);
 
-	public static void initialize() {
-		loadSettings();
-	}
 
-	private static void loadSettings() {
+	public static void initialize() {
 		new File(main.getLanguageFolder()).mkdirs();
 		setPluginLanguage();
 		setPlayerLanguages();
