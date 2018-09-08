@@ -1,0 +1,9 @@
+english:
+  logging:
+    database:
+      failed_db_connection: "Connection to the database has failed, please ensure your connection details are correct."
+      db_conversion: "Metropoles has noticed a difference between your load and save database, converting data..."
+      db_conversion_failed: "An unexpected error has occured while converting your database, please contact the author."
+      failed_to_save_object: "There has been an error trying to save the objects: {objects}"
+      failed_to_load_object: "There has been an error trying to load the objects(s): {objects} by: {criteria}"
+      failed_to_delete_object: "There has been an error trying to delete the objects(s): {objects}"
