@@ -44,12 +44,12 @@ public class LanguageHandler {
 		List<Language> languages = getAllLanguages();
 		if (languages != null && !languages.isEmpty()) {
 			for (Language lang : languages) {
-				loadLanguage(lang, main.getLanguageFolder() + System.getProperty("file.separator") + lang.getName() + ".yml");
+				loadLanguage(lang, main.getLanguageFolder() + File.separator + lang.getName() + ".yml");
 			}
 		}
 		if (!main.getMainConfig().getString(ConfigYMLNodes.LAST_RUN_VERSION).equals(main.getVersion())) {
 			main.getMainConfig().setNode(ConfigYMLNodes.LAST_RUN_VERSION, main.getVersion());
-			deleteTempFile(new File(main.getLanguageFolder() + System.getProperty("file.separator") + "tmp"));
+			deleteTempFile(new File(main.getLanguageFolder() + File.separator + "tmp"));
 		}
 	}
 
@@ -122,7 +122,7 @@ public class LanguageHandler {
 	private static void updateLanguage(Language lang, CommentedConfig languagefile) {
 		// TODO: Logging.
 		// Create tmp language.
-		File file = unpackResourceFile(main.getLanguageFolder() + System.getProperty("file.separator") + "tmp" + System.getProperty("file.separator") + lang.getName() + ".yml", "lang/" + lang.getName() + ".yml");
+		File file = unpackResourceFile(main.getLanguageFolder() + File.separator + "tmp" + System.getProperty("file.separator") + lang.getName() + ".yml", "lang/" + lang.getName() + ".yml");
 		// read the tmp language into memory
 		CommentedConfig language = new CommentedConfig(file);
 		language.load();

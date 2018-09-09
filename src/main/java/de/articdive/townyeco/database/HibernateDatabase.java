@@ -10,6 +10,7 @@ import de.articdive.townyeco.configuration.enums.ConfigYMLNodes;
 import de.articdive.townyeco.lang.LanguageHandler;
 import de.articdive.townyeco.lang.enums.LanguageNodes;
 import de.articdive.townyeco.objects.TEPlayer;
+import de.articdive.townyeco.objects.TEWorld;
 import de.articdive.townyeco.objects.interfaces.TownyEcoObject;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -123,7 +124,7 @@ public class HibernateDatabase {
 	}
 
 	// GET ALL METHODS
-	public static List<TEPlayer> getAllMetropolitains() {
+	public static List<TEPlayer> getAllTEPlayers() {
 		logger.log(Level.INFO, "Getting all TEPlayers");
 		Session s = sessionFactory.openSession();
 		Transaction tx = s.beginTransaction();
@@ -141,7 +142,32 @@ public class HibernateDatabase {
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all metropolitains").replace("{criteria}", ""));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all tePlayers").replace("{criteria}", "*"));
+			return new ArrayList<>();
+		} finally {
+			s.close();
+		}
+	}
+
+	public static List<TEWorld> getAllTEWorlds() {
+		logger.log(Level.INFO, "Getting all TEPlayers");
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+			CriteriaQuery<TEWorld> criteriaQuery = criteriaBuilder.createQuery(TEWorld.class);
+			Root<TEWorld> root = criteriaQuery.from(TEWorld.class);
+			criteriaQuery.select(root);
+			TypedQuery<TEWorld> query = s.createQuery(criteriaQuery);
+			List<TEWorld> list = query.getResultList();
+			tx.commit();
+			return list;
+		} catch (NoResultException e) {
+			return new ArrayList<>();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all teWorlds").replace("{criteria}", "*"));
 			return new ArrayList<>();
 		} finally {
 			s.close();
@@ -152,25 +178,25 @@ public class HibernateDatabase {
 	// GET METHODS
 	public static TEPlayer getTEPlayer(UUID identifier) {
 		logger.log(Level.INFO, "Getting TEPlayer by identifier: " + identifier.toString());
-		TEPlayer metropolitain = null;
+		TEPlayer tePlayer = null;
 		Session s = sessionFactory.openSession();
 		Transaction tx = s.beginTransaction();
 		try {
-			metropolitain = s.get(TEPlayer.class, identifier);
+			tePlayer = s.get(TEPlayer.class, identifier);
 			tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "metropolitain").replace("{criteria}", identifier.toString()));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "tePlayer").replace("{criteria}", identifier.toString()));
 		} finally {
 			s.close();
 		}
-		return metropolitain;
+		return tePlayer;
 	}
 
 	public static List<TEPlayer> getTEPlayer(String lastKnownName) {
 		logger.log(Level.INFO, "Getting TEPlayer(s) by lastKnownName: " + lastKnownName);
-		List<TEPlayer> metropolitains = new ArrayList<>();
+		List<TEPlayer> tePlayers = new ArrayList<>();
 		Session s = sessionFactory.openSession();
 		Transaction tx = s.beginTransaction();
 		try {
@@ -180,31 +206,92 @@ public class HibernateDatabase {
 			criteriaQuery.select(root)
 					.where(criteriaBuilder.equal(root.get("lastKnownName"), lastKnownName));
 			TypedQuery<TEPlayer> query = s.createQuery(criteriaQuery);
-			metropolitains = query.getResultList();
+			tePlayers = query.getResultList();
 			tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "metropolitain").replace("{criteria}", lastKnownName));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "tePlayer").replace("{criteria}", lastKnownName));
 		} finally {
 			s.close();
 		}
-		return metropolitains;
+		return tePlayers;
 	}
 
-	// DELETE METHODS
-	public static void deleteTEPlayer(TEPlayer player) {
-		logger.log(Level.INFO, "Deleting TEPlayer by identifier: " + player.getIdentifier().toString());
+	public static TEWorld getTEWorld(UUID identifier) {
+		logger.log(Level.INFO, "Getting TEWorld by identifier: " + identifier.toString());
+		TEWorld teWorld = null;
 		Session s = sessionFactory.openSession();
 		Transaction tx = s.beginTransaction();
 		try {
-			Object o = s.get(TEPlayer.class, player.getIdentifier());
+			teWorld = s.get(TEWorld.class, identifier);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "teWorld").replace("{criteria}", identifier.toString()));
+		} finally {
+			s.close();
+		}
+		return teWorld;
+	}
+
+	public static List<TEWorld> getTEWorld(String name) {
+		logger.log(Level.INFO, "Getting TEPlayer(s) by name: " + name);
+		List<TEWorld> teWorlds = new ArrayList<>();
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+			CriteriaQuery<TEWorld> criteriaQuery = criteriaBuilder.createQuery(TEWorld.class);
+			Root<TEWorld> root = criteriaQuery.from(TEWorld.class);
+			criteriaQuery.select(root)
+					.where(criteriaBuilder.equal(root.get("name"), name));
+			TypedQuery<TEWorld> query = s.createQuery(criteriaQuery);
+			teWorlds = query.getResultList();
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "teWorld").replace("{criteria}", name));
+		} finally {
+			s.close();
+		}
+		return teWorlds;
+	}
+
+	// DELETE METHODS
+	public static void deleteTEPlayer(TEPlayer tePlayer) {
+		logger.log(Level.INFO, "Deleting TEPlayer by identifier: " + tePlayer.getIdentifier().toString());
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			Object o = s.get(TEPlayer.class, tePlayer.getIdentifier());
 			s.delete(o);
 			tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_DELETE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all properties"));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_DELETE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all fields"));
+			;
+			throw e;
+		} finally {
+			s.close();
+		}
+	}
+
+	public static void deleteTEWorld(TEWorld teWorld) {
+		logger.log(Level.INFO, "Deleting TEWorld by identifier: " + teWorld.getIdentifier().toString());
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			Object o = s.get(TEPlayer.class, teWorld.getIdentifier());
+			s.delete(o);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_DELETE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all fields"));
 			;
 			throw e;
 		} finally {

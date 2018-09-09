@@ -36,6 +36,7 @@ public class PlayerConnectionListener implements Listener {
 		Player player = event.getPlayer();
 		TEPlayer tePlayer = HibernateDatabase.getTEPlayer(player.getUniqueId());
 		if (tePlayer != null) {
+			// TODO: Update Attributes.
 			tePlayer.save();
 		}
 	}

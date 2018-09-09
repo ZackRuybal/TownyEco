@@ -12,10 +12,12 @@ import de.articdive.townyeco.lang.LanguageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public final class TownyEco extends JavaPlugin {
 
 	private String version;
-	private CommentedConfiguration mainConfig = new CommentedConfiguration(ConfigYMLNodes.class, getDataFolder().getPath() + System.getProperty("file.separator") + "config.yml");
+	private CommentedConfiguration mainConfig = new CommentedConfiguration(ConfigYMLNodes.class, getDataFolder().getPath() + File.separator + "config.yml");
 
 	public TownyEco() {
 		// Update version.
@@ -97,7 +99,7 @@ public final class TownyEco extends JavaPlugin {
 	 * @return - Database folder
 	 */
 	public String getDatabaseFolder() {
-		return getRootFolder() + System.getProperty("file.separator") + "data";
+		return getRootFolder() + File.separator + "data";
 	}
 
 	/**
@@ -106,7 +108,7 @@ public final class TownyEco extends JavaPlugin {
 	 * @return - Language folder.
 	 */
 	public String getLanguageFolder() {
-		return getRootFolder() + System.getProperty("file.separator") + "lang";
+		return getRootFolder() + File.separator + "lang";
 	}
 
 	/**
@@ -115,6 +117,6 @@ public final class TownyEco extends JavaPlugin {
 	 * @return - Database changelog folder
 	 */
 	public String getDatabaseChangelogFolder() {
-		return getDatabaseFolder() + System.getProperty("file.separator") + "db-changelogs";
+		return getDatabaseFolder() + File.separator + "db-changelogs";
 	}
 }

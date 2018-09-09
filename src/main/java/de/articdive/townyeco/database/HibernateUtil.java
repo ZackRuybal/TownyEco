@@ -148,7 +148,7 @@ public class HibernateUtil {
 					.applySetting("hibernate.connection.username", "")
 					.applySetting("hibernate.connection.password", "")
 					.applySetting("hibernate.connection.driver_class", "org.h2.Driver")
-					.applySetting("hibernate.connection.url", "jdbc:h2:./" + main.getDatabaseFolder() + System.getProperty("file.separator") + schema + ";MV_STORE=FALSE;AUTO_SERVER=true;")
+					.applySetting("hibernate.connection.url", "jdbc:h2:./" + main.getDatabaseFolder() + File.separator + schema + ";MV_STORE=FALSE;AUTO_SERVER=true;")
 					.applySetting("hibernate.dialect", "org.hibernate.dialect.H2Dialect")
 					.applySetting("connection.provider_class", "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
 					.applySetting("hibernate.hikari.connectionTimeout", "20000")
