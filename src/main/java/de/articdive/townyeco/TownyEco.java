@@ -9,46 +9,34 @@ import de.articdive.commentedconfiguration.CommentedConfiguration;
 import de.articdive.townyeco.configuration.enums.ConfigYMLNodes;
 import de.articdive.townyeco.database.HibernateDatabase;
 import de.articdive.townyeco.lang.LanguageHandler;
-import org.bukkit.Bukkit;
+import de.articdive.townyeco.listeners.PlayerConnectionListener;
+import de.articdive.townyeco.listeners.ServerListener;
+import de.articdive.townyeco.listeners.ServerWorldListener;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public final class TownyEco extends JavaPlugin {
 
 	private String version;
 	private CommentedConfiguration mainConfig = new CommentedConfiguration(ConfigYMLNodes.class, getDataFolder().getPath() + File.separator + "config.yml");
+	private ArrayList<Listener> listeners = new ArrayList<>();
 
-	public TownyEco() {
+	@Override
+	public void onEnable() {
 		// Update version.
 		version = this.getDescription().getVersion();
 		// Update Configuration Version.
 		mainConfig.setNode(ConfigYMLNodes.VERSION, version);
-	}
-
-	@Override
-	public void onLoad() {
 		// Initialize Static classes.
 		LanguageHandler.initialize();
 		HibernateDatabase.initialize();
-	}
-
-	@Override
-	public void onEnable() {
-		try {
-			Class.forName("org.spigotmc.SpigotConfig");
-		} catch (ClassNotFoundException e) {
-			getLogger().severe("Disabling Metropoles: You're not running Spigot...");
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
-		}
 		// Register Events
 		registerEvents();
 		// Register Commands
 		registerCommands();
-		// Set SessionFactory
-		HibernateDatabase.load();
-
 	}
 
 	@Override
@@ -58,7 +46,9 @@ public final class TownyEco extends JavaPlugin {
 	}
 
 	private void registerEvents() {
-		// TODO: Add Events
+		listeners.add(new ServerListener());
+		listeners.add(new ServerWorldListener());
+		listeners.add(new PlayerConnectionListener());
 	}
 
 
@@ -67,34 +57,34 @@ public final class TownyEco extends JavaPlugin {
 	}
 
 	/**
-	 * Get Metropoles' version.
+	 * Get TownyEco's version.
 	 *
-	 * @return - Metropoles' version.
+	 * @return - TownyEco's version.
 	 */
 	public String getVersion() {
 		return version;
 	}
 
 	/**
-	 * Get Metropoles' main CommentedConfiguration.
+	 * Get TownyEco's main CommentedConfiguration.
 	 *
-	 * @return - Metropoles' Main Commented Configuration.
+	 * @return - TownyEco's Main Commented Configuration.
 	 */
 	public CommentedConfiguration getMainConfig() {
 		return mainConfig;
 	}
 
 	/**
-	 * Get main (Root) folder of Metropoles.
+	 * Get main (Root) folder of TownyEco.
 	 *
-	 * @return - Metropoles' root folder
+	 * @return - TownyEco's root folder
 	 */
 	public String getRootFolder() {
 		return this.getDataFolder().getPath();
 	}
 
 	/**
-	 * Get the folder for DBs
+	 * Get the folder for DBs.
 	 *
 	 * @return - Database folder
 	 */
@@ -112,11 +102,20 @@ public final class TownyEco extends JavaPlugin {
 	}
 
 	/**
-	 * Get the database changelog folder
+	 * Get the database changelog folder.
 	 *
 	 * @return - Database changelog folder
 	 */
 	public String getDatabaseChangelogFolder() {
 		return getDatabaseFolder() + File.separator + "db-changelogs";
+	}
+
+	/**
+	 * Get all the listeners registered by TownyEco.
+	 *
+	 * @return - List of all listeners.
+	 */
+	public ArrayList<Listener> getListeners() {
+		return listeners;
 	}
 }

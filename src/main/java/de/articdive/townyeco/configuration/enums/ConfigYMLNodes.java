@@ -35,7 +35,7 @@ public enum ConfigYMLNodes implements ConfigNodes {
 	DATABASE_LOAD_TYPE("database.load.type", "h2", "# Load database type (options: h2, mysql)"),
 	DATABASE_LOAD_HOSTNAME("database.load.hostname", "localhost", "# Load database hostname"),
 	DATABASE_LOAD_PORT("database.load.port", "3306", "# Load database port"),
-	DATABASE_LOAD_SCHEMA_NAME("database.load.dbname", "metropoles", "# Load database schema / database"),
+	DATABASE_LOAD_SCHEMA_NAME("database.load.dbname", "townyeco", "# Load database schema / database"),
 	DATABASE_LOAD_USERNAME("database.load.username", "", "# Load database username"),
 	DATABASE_LOAD_PASSWORD("database.load.password", "", "# Load database password"),
 	// Database SAVE:
@@ -43,7 +43,7 @@ public enum ConfigYMLNodes implements ConfigNodes {
 	DATABASE_SAVE_TYPE("database.save.type", "h2", "# Save database type (options: h2, mysql)"),
 	DATABASE_SAVE_HOSTNAME("database.save.hostname", "localhost", "# Save database hostname"),
 	DATABASE_SAVE_PORT("database.save.port", "3306", "# Save database port"),
-	DATABASE_SAVE_SCHEMA_NAME("database.save.dbname", "metropoles", "# Save database schema / database"),
+	DATABASE_SAVE_SCHEMA_NAME("database.save.dbname", "townyeco", "# Save database schema / database"),
 	DATABASE_SAVE_USERNAME("database.save.username", "", "# Save database username"),
 	DATABASE_SAVE_PASSWORD("database.save.password", "", "# Save database password"),
 	LANGUAGE_HEADER("language", "",
@@ -67,8 +67,8 @@ public enum ConfigYMLNodes implements ConfigNodes {
 			"# +-----------------------------------------------------+ #",
 			"###########################################################",
 			"",
-			"# This section configures metropoles's logging system"),
-	LOGGING_FILE_ENABLED("logging.file_enabled", "true", "# Should Metropoles log to files?");
+			"# This section configures TownyEco's logging system"),
+	LOGGING_FILE_ENABLED("logging.file_enabled", "true", "# Should TownyEco log to files?");
 
 
 	private final String node;

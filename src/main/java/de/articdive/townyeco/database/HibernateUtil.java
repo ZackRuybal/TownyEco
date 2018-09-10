@@ -37,7 +37,7 @@ import java.util.List;
 
 public class HibernateUtil {
 	private static TownyEco main = TownyEco.getPlugin(TownyEco.class);
-	private static final Logger logger = LogManager.getLogger("de.articdive.metropoles.database");
+	private static final Logger logger = LogManager.getLogger("de.articdive.townyeco.database");
 
 	public static SessionFactory load() {
 		// Get Login Information for LOAD:
@@ -140,7 +140,7 @@ public class HibernateUtil {
 					.applySetting("hibernate.enable_lazy_load_no_trans", true)
 					.applySetting("hibernate.show_sql", false)
 					.applySetting("hibernate.format_sql", false)
-					.applySetting("hibernate.physical_naming_strategy", "de.articdive.metropoles.database.MetropolesHibernateNamingStrategy")
+					.applySetting("hibernate.physical_naming_strategy", "de.articdive.townyeco.database.TownyEcoHibernateNamingStrategy")
 					.build();
 		}
 		if (dbtype.equalsIgnoreCase("h2") || registry == null) {
@@ -158,7 +158,7 @@ public class HibernateUtil {
 					.applySetting("hibernate.enable_lazy_load_no_trans", true)
 					.applySetting("hibernate.show_sql", false)
 					.applySetting("hibernate.format_sql", false)
-					.applySetting("hibernate.physical_naming_strategy", "de.articdive.metropoles.database.MetropolesHibernateNamingStrategy")
+					.applySetting("hibernate.physical_naming_strategy", "de.articdive.townyeco.database.TownyEcoHibernateNamingStrategy")
 					.build();
 		}
 		return registry;

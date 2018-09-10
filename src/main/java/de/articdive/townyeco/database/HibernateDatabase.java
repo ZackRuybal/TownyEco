@@ -43,7 +43,7 @@ import java.util.concurrent.Executors;
 
 public class HibernateDatabase {
 	private static SessionFactory sessionFactory;
-	private static final Logger logger = LogManager.getLogger("de.articdive.metropoles.database");
+	private static final Logger logger = LogManager.getLogger("de.articdive.townyeco.database");
 	private static TownyEco main = TownyEco.getPlugin(TownyEco.class);
 	private static CompletableFuture<SessionFactory> result = new CompletableFuture<>();
 
@@ -60,7 +60,7 @@ public class HibernateDatabase {
 		appenders.add(FileAppender.createAppender(main.getRootFolder() + "/logs/Hibernate.log", "false", "false", "FileHiberate", "true", "false", "false", "0", layout, null, "false", null, config));
 		appenders.add(FileAppender.createAppender(main.getRootFolder() + "/logs/Liquibase.log", "false", "false", "FileLiquibase", "true", "false", "false", "0", layout, null, "false", null, config));
 		appenders.add(FileAppender.createAppender(main.getRootFolder() + "/logs/HikariCP.log", "false", "false", "FileHikariCP", "true", "false", "false", "0", layout, null, "false", null, config));
-		appenders.add(FileAppender.createAppender(main.getRootFolder() + "/logs/Metropoles.log", "false", "false", "FileMetropoles", "true", "false", "false", "0", layout, null, "false", null, config));
+		appenders.add(FileAppender.createAppender(main.getRootFolder() + "/logs/TownyEco.log", "false", "false", "FileTownyEco", "true", "false", "false", "0", layout, null, "false", null, config));
 
 		for (Appender appender : appenders) {
 			appender.start();
@@ -74,18 +74,18 @@ public class HibernateDatabase {
 		liquibaseLoggerConfig.addAppender(appenders.get(1), null, null);
 		LoggerConfig hikariCPLoggerConfig = LoggerConfig.createLogger(false, Level.ALL, "com.zaxxer.hikari", "false", appendersreferences.get(2), null, config, null);
 		hikariCPLoggerConfig.addAppender(appenders.get(2), null, null);
-		LoggerConfig metropolesLoggerConfig = LoggerConfig.createLogger(false, Level.ALL, "de.articdive.metropoles.database", "false", appendersreferences.get(3), null, config, null);
-		metropolesLoggerConfig.addAppender(appenders.get(3), null, null);
+		LoggerConfig townyecoLoggerConfig = LoggerConfig.createLogger(false, Level.ALL, "de.articdive.townyeco.database", "false", appendersreferences.get(3), null, config, null);
+		townyecoLoggerConfig.addAppender(appenders.get(3), null, null);
 		if (!main.getMainConfig().getBoolean(ConfigYMLNodes.LOGGING_FILE_ENABLED)) {
 			hibernateLoggerConfig.setLevel(Level.OFF);
 			liquibaseLoggerConfig.setLevel(Level.OFF);
 			hikariCPLoggerConfig.setLevel(Level.OFF);
-			metropolesLoggerConfig.setLevel(Level.OFF);
+			townyecoLoggerConfig.setLevel(Level.OFF);
 		}
 		config.addLogger("org.hibernate", hibernateLoggerConfig);
 		config.addLogger("liquibase", liquibaseLoggerConfig);
 		config.addLogger("com.zaxxer.hikari", hikariCPLoggerConfig);
-		config.addLogger("de.articdive.metropoles.database", metropolesLoggerConfig);
+		config.addLogger("de.articdive.townyeco.database", townyecoLoggerConfig);
 		ctx.updateLoggers();
 
 		Executor executor = Executors.newScheduledThreadPool(1);

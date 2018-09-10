@@ -55,6 +55,7 @@ public class LiquibaseSchemaGenerator {
 				PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(new File(main.getDatabaseChangelogFolder() + "/db.changelog-master.xml"))));
 				String str;
 				while ((str = reader.readLine()) != null) {
+					str = str.replace("/WORLDS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "WORLDS");
 					str = str.replace("/PLAYERS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "PLAYERS");
 					writer.println(str);
 				}
