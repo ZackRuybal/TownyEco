@@ -29,9 +29,13 @@ public class PlayerConnectionListener implements Listener {
 			TEPlayer tePlayer = HibernateDatabase.getTEPlayer(player.getUniqueId());
 			if (tePlayer != null) {
 				tePlayer.setLastKnownName(player.getName());
+				tePlayer.setLastOnline(System.currentTimeMillis());
 			} else {
 				tePlayer = new TEPlayer(player.getUniqueId());
 				tePlayer.setLastKnownName(player.getName());
+				tePlayer.setRegistered(System.currentTimeMillis());
+				tePlayer.setLastOnline(System.currentTimeMillis());
+
 			}
 			tePlayer.save();
 		}
@@ -42,7 +46,7 @@ public class PlayerConnectionListener implements Listener {
 		Player player = event.getPlayer();
 		TEPlayer tePlayer = HibernateDatabase.getTEPlayer(player.getUniqueId());
 		if (tePlayer != null) {
-			// TODO: Update Attributes.
+			tePlayer.setLastOnline(System.currentTimeMillis());
 			tePlayer.save();
 		}
 	}

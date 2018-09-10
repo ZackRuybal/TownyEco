@@ -35,8 +35,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Connection;
 
-public class LiquibaseSchemaGenerator {
-	private static TownyEco main = TownyEco.getPlugin(TownyEco.class);
+class LiquibaseSchemaGenerator {
+	private static final TownyEco main = TownyEco.getPlugin(TownyEco.class);
 	private static boolean prefixed = false;
 
 	public static void liquify(Connection connection) throws LiquibaseException {
@@ -47,6 +47,7 @@ public class LiquibaseSchemaGenerator {
 		liquibase.update(new Contexts(), new LabelExpression());
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	private static void copyfromJAR() {
 		if (!prefixed) {
 			try {
@@ -57,6 +58,7 @@ public class LiquibaseSchemaGenerator {
 				while ((str = reader.readLine()) != null) {
 					str = str.replace("/WORLDS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "WORLDS");
 					str = str.replace("/PLAYERS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "PLAYERS");
+					str = str.replace("/CURRENCIES/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "CURRENCIES");
 					writer.println(str);
 				}
 				writer.close();

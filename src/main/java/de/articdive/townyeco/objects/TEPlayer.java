@@ -26,6 +26,12 @@ public class TEPlayer implements TownyEcoObject {
 	@Column(name = "lastKnownName", columnDefinition = "VARCHAR(255)")
 	private String lastKnownName;
 
+	@Column(name = "registered", columnDefinition = "BIGINT(20)")
+	private long registered;
+
+	@Column(name = "lastOnline", columnDefinition = "BIGINT(20)")
+	private long lastOnline;
+
 	public TEPlayer(UUID identifier) {
 		this.identifier = identifier;
 	}
@@ -42,6 +48,14 @@ public class TEPlayer implements TownyEcoObject {
 		return lastKnownName;
 	}
 
+	public long getRegistered() {
+		return registered;
+	}
+
+	public long getLastOnline() {
+		return lastOnline;
+	}
+
 	// Setters
 	private void setIdentifier(UUID identifier) {
 		this.identifier = identifier;
@@ -49,5 +63,13 @@ public class TEPlayer implements TownyEcoObject {
 
 	public void setLastKnownName(String lastKnownName) {
 		this.lastKnownName = lastKnownName;
+	}
+
+	public void setRegistered(long registered) {
+		this.registered = registered;
+	}
+
+	public void setLastOnline(long lastOnline) {
+		this.lastOnline = lastOnline;
 	}
 }

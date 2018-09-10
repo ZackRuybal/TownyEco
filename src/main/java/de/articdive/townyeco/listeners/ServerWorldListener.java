@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServerWorldListener implements Listener {
-	public static List<World> worlds = new ArrayList<>();
+	static List<World> worlds = new ArrayList<>();
 
 	public ServerWorldListener() {
 		Bukkit.getPluginManager().registerEvents(this, TownyEco.getPlugin(TownyEco.class));

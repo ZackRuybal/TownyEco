@@ -21,8 +21,8 @@ import java.util.ArrayList;
 public final class TownyEco extends JavaPlugin {
 
 	private String version;
-	private CommentedConfiguration mainConfig = new CommentedConfiguration(ConfigYMLNodes.class, getDataFolder().getPath() + File.separator + "config.yml");
-	private ArrayList<Listener> listeners = new ArrayList<>();
+	private final CommentedConfiguration mainConfig = new CommentedConfiguration(ConfigYMLNodes.class, getDataFolder().getPath() + File.separator + "config.yml");
+	private final ArrayList<Listener> listeners = new ArrayList<>();
 
 	@Override
 	public void onEnable() {

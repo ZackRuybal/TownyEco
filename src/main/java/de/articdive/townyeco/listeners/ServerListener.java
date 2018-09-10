@@ -40,5 +40,6 @@ public class ServerListener implements Listener {
 			}
 			teWorld.save();
 		}
+		ServerWorldListener.worlds = null;
 	}
 }

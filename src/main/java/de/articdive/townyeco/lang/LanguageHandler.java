@@ -27,12 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LanguageHandler {
-	private static HashMap<Language, CommentedConfig> languages = new HashMap<>();
-	private static List<Language> playerLanguages = new ArrayList<>();
+	private static final HashMap<Language, CommentedConfig> languages = new HashMap<>();
+	private static final List<Language> playerLanguages = new ArrayList<>();
 	private static Language pluginLanguage;
-	private static TownyEco main = TownyEco.getPlugin(TownyEco.class);
+	private static final TownyEco main = TownyEco.getPlugin(TownyEco.class);
 
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public static void initialize() {
 		new File(main.getLanguageFolder()).mkdirs();
 		setPluginLanguage();
@@ -150,6 +151,7 @@ public class LanguageHandler {
 		return languages.get(lang).getString((lang.getName() + "." + node.getNode()).toLowerCase());
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	private static File unpackResourceFile(String filePath, String resource) {
 
 		File file = new File(filePath);
@@ -168,25 +170,19 @@ public class LanguageHandler {
 
 
 		// Populate a new file
-		try {
-			resString = convertStreamToString("/" + resource);
-			FileMgmt.stringToFile(resString, new File(filePath));
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		resString = convertStreamToString("/" + resource);
+		FileMgmt.stringToFile(resString, new File(filePath));
 
 		return file;
 	}
 
-	private static String convertStreamToString(String name) throws IOException {
+	private static String convertStreamToString(String name) {
 
 		if (name != null) {
 			Writer writer = new StringWriter();
-			InputStream is = LanguageHandler.class.getResourceAsStream(name);
 
-			char[] buffer = new char[1024];
-			try {
+			try (InputStream is = LanguageHandler.class.getResourceAsStream(name)) {
+				char[] buffer = new char[1024];
 				Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 				int n;
 				while ((n = reader.read(buffer)) != -1) {
@@ -195,12 +191,6 @@ public class LanguageHandler {
 			} catch (IOException e) {
 				e.printStackTrace();
 				// TODO: Logging
-			} finally {
-				try {
-					is.close();
-				} catch (NullPointerException e) {
-					throw new IOException();
-				}
 			}
 			return writer.toString();
 		} else {
@@ -208,6 +198,7 @@ public class LanguageHandler {
 		}
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	private static void deleteTempFile(File tempFile) {
 		if (tempFile.isDirectory()) {
 			File[] entries = tempFile.listFiles();

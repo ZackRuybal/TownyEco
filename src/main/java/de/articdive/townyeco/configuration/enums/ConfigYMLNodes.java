@@ -8,6 +8,7 @@ package de.articdive.townyeco.configuration.enums;
 
 import de.articdive.commentedconfiguration.interfaces.ConfigNodes;
 
+@SuppressWarnings("unused")
 public enum ConfigYMLNodes implements ConfigNodes {
 	// Version:
 	VERSION_HEADER("version", ""),

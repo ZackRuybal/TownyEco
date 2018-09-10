@@ -23,6 +23,7 @@ import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.bukkit.Bukkit;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -44,7 +45,7 @@ import java.util.concurrent.Executors;
 public class HibernateDatabase {
 	private static SessionFactory sessionFactory;
 	private static final Logger logger = LogManager.getLogger("de.articdive.townyeco.database");
-	private static TownyEco main = TownyEco.getPlugin(TownyEco.class);
+	private static final TownyEco main = TownyEco.getPlugin(TownyEco.class);
 	private static CompletableFuture<SessionFactory> result = new CompletableFuture<>();
 
 	public static void initialize() {
@@ -65,18 +66,18 @@ public class HibernateDatabase {
 		for (Appender appender : appenders) {
 			appender.start();
 			config.addAppender(appender);
-			appendersreferences.add(new AppenderRef[]{AppenderRef.createAppenderRef(appender.getName(), null, null)});
+			appendersreferences.add(new AppenderRef[]{AppenderRef.createAppenderRef(appender.getName(), Level.ALL, null)});
 		}
 
 		LoggerConfig hibernateLoggerConfig = LoggerConfig.createLogger(false, Level.ALL, "org.hibernate", "false", appendersreferences.get(0), null, config, null);
-		hibernateLoggerConfig.addAppender(appenders.get(0), null, null);
+		hibernateLoggerConfig.addAppender(appenders.get(0), Level.ALL, null);
 		LoggerConfig liquibaseLoggerConfig = LoggerConfig.createLogger(false, Level.ALL, "liquibase", "false", appendersreferences.get(1), null, config, null);
-		liquibaseLoggerConfig.addAppender(appenders.get(1), null, null);
+		liquibaseLoggerConfig.addAppender(appenders.get(1), Level.ALL, null);
 		LoggerConfig hikariCPLoggerConfig = LoggerConfig.createLogger(false, Level.ALL, "com.zaxxer.hikari", "false", appendersreferences.get(2), null, config, null);
-		hikariCPLoggerConfig.addAppender(appenders.get(2), null, null);
+		hikariCPLoggerConfig.addAppender(appenders.get(2), Level.ALL, null);
 		LoggerConfig townyecoLoggerConfig = LoggerConfig.createLogger(false, Level.ALL, "de.articdive.townyeco.database", "false", appendersreferences.get(3), null, config, null);
-		townyecoLoggerConfig.addAppender(appenders.get(3), null, null);
-		if (!main.getMainConfig().getBoolean(ConfigYMLNodes.LOGGING_FILE_ENABLED)) {
+		townyecoLoggerConfig.addAppender(appenders.get(3), Level.ALL, null);
+		if (!(main.getMainConfig().getBoolean(ConfigYMLNodes.LOGGING_FILE_ENABLED))) {
 			hibernateLoggerConfig.setLevel(Level.OFF);
 			liquibaseLoggerConfig.setLevel(Level.OFF);
 			hikariCPLoggerConfig.setLevel(Level.OFF);
@@ -102,7 +103,7 @@ public class HibernateDatabase {
 
 
 	public static void close() {
-		logger.log(Level.INFO, "Closing SessionFactory");
+		logger.log(Level.ALL, "Closing SessionFactory");
 		sessionFactory.close();
 	}
 
@@ -273,7 +274,6 @@ public class HibernateDatabase {
 			e.printStackTrace();
 			tx.rollback();
 			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_DELETE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all fields"));
-			;
 			throw e;
 		} finally {
 			s.close();
@@ -292,7 +292,6 @@ public class HibernateDatabase {
 			e.printStackTrace();
 			tx.rollback();
 			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_DELETE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all fields"));
-			;
 			throw e;
 		} finally {
 			s.close();

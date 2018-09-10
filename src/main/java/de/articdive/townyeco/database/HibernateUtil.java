@@ -35,8 +35,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HibernateUtil {
-	private static TownyEco main = TownyEco.getPlugin(TownyEco.class);
+class HibernateUtil {
+	private static final TownyEco main = TownyEco.getPlugin(TownyEco.class);
 	private static final Logger logger = LogManager.getLogger("de.articdive.townyeco.database");
 
 	public static SessionFactory load() {
@@ -81,6 +81,7 @@ public class HibernateUtil {
 			}
 			return saveSessionFactory;
 		} catch (Exception e) {
+			e.printStackTrace();
 			// Any exceptions Handled:
 			StandardServiceRegistryBuilder.destroy(standardServiceRegistry);
 			logger.log(Level.FATAL, e);
@@ -121,6 +122,7 @@ public class HibernateUtil {
 		}
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	private static StandardServiceRegistry getRegistry(String dbtype, String hostname, String port, String
 			schema, String username, String password) {
 		StandardServiceRegistry registry = null;
