@@ -10,6 +10,7 @@ import de.articdive.townyeco.configuration.enums.ConfigYMLNodes;
 import de.articdive.townyeco.lang.LanguageHandler;
 import de.articdive.townyeco.lang.enums.LanguageNodes;
 import de.articdive.townyeco.objects.TEPlayer;
+import de.articdive.townyeco.objects.TEWorld;
 import de.articdive.townyeco.objects.interfaces.TownyEcoObject;
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 import org.apache.logging.log4j.Level;
@@ -101,7 +102,13 @@ class HibernateUtil {
 			Metadata loadmetadata = loadsources.buildMetadata();
 			SessionFactory loadSessionFactory = loadmetadata.buildSessionFactory();
 
+			List<TEWorld> teWorlds = new ArrayList<>(getAllTEWorlds(loadSessionFactory));
 			List<TEPlayer> tePlayers = new ArrayList<>(getAllTEPlayers(loadSessionFactory));
+			// TODO: Add Conversion for Currencies and Shops.
+			// TODO: CRITICAL: Make sure Conversions for Balances work!
+			for (TEWorld teWorld : teWorlds) {
+				saveObject(teWorld, saveSessionFactory);
+			}
 			for (TEPlayer tePlayer : tePlayers) {
 				saveObject(tePlayer, saveSessionFactory);
 			}
@@ -185,6 +192,31 @@ class HibernateUtil {
 			e.printStackTrace();
 			tx.rollback();
 			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all metropolitains").replace("{criteria}", ""));
+			return new ArrayList<>();
+		} finally {
+			s.close();
+		}
+	}
+
+	private static List<TEWorld> getAllTEWorlds(SessionFactory sessionFactory) {
+		logger.log(Level.INFO, "Getting all TEWorlds");
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+			CriteriaQuery<TEWorld> criteriaQuery = criteriaBuilder.createQuery(TEWorld.class);
+			Root<TEWorld> root = criteriaQuery.from(TEWorld.class);
+			criteriaQuery.select(root);
+			TypedQuery<TEWorld> query = s.createQuery(criteriaQuery);
+			List<TEWorld> list = query.getResultList();
+			tx.commit();
+			return list;
+		} catch (NoResultException e) {
+			return new ArrayList<>();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all teWorlds").replace("{criteria}", "*"));
 			return new ArrayList<>();
 		} finally {
 			s.close();

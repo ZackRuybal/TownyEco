@@ -7,3 +7,7 @@ german:
       failed_to_save_object: "There has been an error trying to save the objects: {objects}"
       failed_to_load_object: "There has been an error trying to load the objects(s): {objects} by: {criteria}"
       failed_to_delete_object: "There has been an error trying to delete the objects(s): {objects}"
+  messages:
+    shops:
+      default_enterance: 'Welcome to {shopname}, {playername}'
+      default_exit: 'Goodbye, {playername}'

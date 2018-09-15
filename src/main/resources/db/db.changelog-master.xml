@@ -8,6 +8,9 @@
         <!ENTITY TEWorlds "/WORLDS/">
         <!ENTITY TEPlayers "/PLAYERS/">
         <!ENTITY TECurrencies "/CURRENCIES/">
+        <!ENTITY TECurrenciesBalances "/CURRENCIES_BALANCES/">
+        <!ENTITY TEShops "/SHOPS/">
+        <!ENTITY TEShopsStock "/SHOPS_STOCK/">
         ]>
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
@@ -31,6 +34,7 @@
             <column name="lastKnownName" type="VARCHAR(255)"/>
             <column name="registered" type="BIGINT(20)"/>
             <column name="lastOnline" type="BIGINT(20)"/>
+            <column name="language" type="VARCHAR(255)"/>
         </createTable>
 
         <createTable tableName="&TECurrencies;">
@@ -38,6 +42,41 @@
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="world_identifier" type="VARCHAR(36)"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="&TECurrenciesBalances;">
+            <column name="tecurrency_identifier" type="VARCHAR(36)"/>
+            <column name="player_identifier" type="VARCHAR(36)"/>
+            <column name="balance" type="DECIMAL"/>
+        </createTable>
+
+        <createTable tableName="&TEShops;">
+            <!-- TEShop -->
+            <column name="identifier" type="VARCHAR(36)">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="world_identifier" type="VARCHAR(36)"/>
+            <column name="shop_type" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="entrance_message" type="TEXT"/>
+            <column name="exit_message" type="TEXT"/>
+            <!-- ServerShop -->
+            <column name="minX" type="INTEGER"/>
+            <column name="minY" type="INTEGER"/>
+            <column name="minZ" type="INTEGER"/>
+            <column name="maxX" type="INTEGER"/>
+            <column name="maxY" type="INTEGER"/>
+            <column name="maxZ" type="INTEGER"/>
+            <!-- TownyShop -->
+            <column name="x" type="INTEGER"/>
+            <column name="z" type="INTEGER"/>
+        </createTable>
+
+        <createTable tableName="&TEShopsStock;">
+            <column name="teshop_identifier" type="VARCHAR(36)"/>
+            <column name="material" type="VARCHAR(255)"/>
+            <column name="amount" type="INTEGER"/>
         </createTable>
 
     </changeSet>

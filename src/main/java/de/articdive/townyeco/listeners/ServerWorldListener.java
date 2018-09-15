@@ -5,26 +5,20 @@
 
 package de.articdive.townyeco.listeners;
 
-import de.articdive.townyeco.TownyEco;
 import de.articdive.townyeco.database.HibernateDatabase;
+import de.articdive.townyeco.listeners.abstractions.TownyEcoListener;
 import de.articdive.townyeco.objects.TEWorld;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerWorldListener implements Listener {
+public class ServerWorldListener extends TownyEcoListener {
 	static List<World> worlds = new ArrayList<>();
-
-	public ServerWorldListener() {
-		Bukkit.getPluginManager().registerEvents(this, TownyEco.getPlugin(TownyEco.class));
-	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onWorldLoad(WorldLoadEvent event) {

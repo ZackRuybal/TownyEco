@@ -59,6 +59,9 @@ class LiquibaseSchemaGenerator {
 					str = str.replace("/WORLDS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "WORLDS");
 					str = str.replace("/PLAYERS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "PLAYERS");
 					str = str.replace("/CURRENCIES/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "CURRENCIES");
+					str = str.replace("/CURRENCIES_BALANCES/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "CURRENCIES_BALANCES");
+					str = str.replace("/SHOPS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "SHOPS");
+					str = str.replace("/SHOPS_STOCK/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "SHOPS_STOCK");
 					writer.println(str);
 				}
 				writer.close();

@@ -12,14 +12,8 @@ import de.articdive.commentedconfiguration.interfaces.ConfigNodes;
 public enum ConfigYMLNodes implements ConfigNodes {
 	// Version:
 	VERSION_HEADER("version", ""),
-	VERSION(
-			"version.version",
-			"",
-			"# This is the current version of Metropolis."),
-	LAST_RUN_VERSION(
-			"version.last_run_version",
-			"",
-			"# This is for updating language files. Please do not edit."),
+	VERSION("version.version", "", "# This is the current version of Metropolis."),
+	LAST_RUN_VERSION("version.last_run_version", "", "# This is for updating language files. Please do not edit."),
 	DATABASE_HEADER("database", "",
 			"",
 			"############################################################",
@@ -68,8 +62,32 @@ public enum ConfigYMLNodes implements ConfigNodes {
 			"# +-----------------------------------------------------+ #",
 			"###########################################################",
 			"",
-			"# This section configures TownyEco's logging system"),
-	LOGGING_FILE_ENABLED("logging.file_enabled", "true", "# Should TownyEco log to files?");
+			"# This section configures TownyEco's logging system."),
+	LOGGING_FILE_ENABLED("logging.file_enabled", "true", "# Should TownyEco log to files?"),
+	INTEGRATION_HEADER("integration", "",
+			"",
+			"###########################################################",
+			"# +-----------------------------------------------------+ #",
+			"# |              Integration Configuration              | #",
+			"# +-----------------------------------------------------+ #",
+			"###########################################################",
+			"",
+			"# This section configures TownyEco's integration with other plugins."),
+	TOWNY_INTEGRATION("integration.towny", "", "# All options regarding TownyEco's integration with Towny."),
+	TOWNY_INTEGRATION_ENABLED("integration.towny.enabled", "true", "# Should TownyEco integrate with Towny?"),
+	MESSAGES_HEADER("messages", "",
+			"###########################################################",
+			"# +-----------------------------------------------------+ #",
+			"# |                Message Configuration                | #",
+			"# +-----------------------------------------------------+ #",
+			"###########################################################",
+			"",
+			"# This section configures TownyEco's messaging system."),
+	MESSAGES_PREFIX_ENABLED("messages.prefix_enabled", "true", "# Should TownyEco's messages be prefixed?"),
+	MESSAGES_PREFIX("messages.prefix", "&7[&bTE&7] ", "# TownyEco's prefix"),
+	MESSAGES_SHOPS("messages.shops", "", "# This sub-section is for all shop related messaging."),
+	MESSAGES_SHOPS_ENTERANCE_MESSAGE_ENABLED("messages.shops.entrance_message", "true", "# Should shops send an entrance message?"),
+	MESSAGES_SHOPS_EXIT_MESSAGE_ENABLED("messages.shops.exit_message", "true", "# Should shops send an exit message?");
 
 
 	private final String node;

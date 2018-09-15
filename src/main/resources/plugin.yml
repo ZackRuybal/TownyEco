@@ -2,6 +2,7 @@ name: TownyEco
 version: ${project.version}
 main: de.articdive.townyeco.TownyEco
 load: STARTUP
+api-version: 1.13
 prefix: TownyEco
 authors: [Articdive]
 description: A complete rewrite of HyperConomy more suitable for closed-economies using Towny

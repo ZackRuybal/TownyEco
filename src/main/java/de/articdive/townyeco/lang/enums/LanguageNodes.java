@@ -12,7 +12,11 @@ public enum LanguageNodes {
 	LOGGING_DATABASE_FAILED_TO_SAVE_OBJECT("logging.database.failed_to_save_object"),
 	LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT("logging.database.failed_to_load_object"),
 	LOGGING_DATABASE_FAILED_TO_DELETE_OBJECT("logging.database.failed_to_delete_object"),
-	LOGGING_DATABASE_DB_CONVERSION_FAILED("logging.database.db_conversion_failed");
+	LOGGING_DATABASE_DB_CONVERSION_FAILED("logging.database.db_conversion_failed"),
+	// Messages
+	MESSAGES_TIMEFORMAT("messages.timeformat"),
+	MESSAGES_SHOPS_DEFAULT_ENTRANCE("messages.shops.default_enterance"),
+	MESSAGES_SHOPS_DEFAULT_EXIT("messages.shops.default_exit");
 
 	private final String node;
 

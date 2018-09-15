@@ -8,8 +8,13 @@ package de.articdive.townyeco.database;
 import de.articdive.townyeco.TownyEco;
 import de.articdive.townyeco.configuration.enums.ConfigYMLNodes;
 import de.articdive.townyeco.lang.LanguageHandler;
+import de.articdive.townyeco.lang.enums.Language;
 import de.articdive.townyeco.lang.enums.LanguageNodes;
+import de.articdive.townyeco.objects.TECurrency;
 import de.articdive.townyeco.objects.TEPlayer;
+import de.articdive.townyeco.objects.TEServerShop;
+import de.articdive.townyeco.objects.TEShop;
+import de.articdive.townyeco.objects.TETownyShop;
 import de.articdive.townyeco.objects.TEWorld;
 import de.articdive.townyeco.objects.interfaces.TownyEcoObject;
 import org.apache.logging.log4j.Level;
@@ -23,11 +28,13 @@ import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -143,7 +150,7 @@ public class HibernateDatabase {
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all tePlayers").replace("{criteria}", "*"));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all TEPlayers").replace("{criteria}", "*"));
 			return new ArrayList<>();
 		} finally {
 			s.close();
@@ -151,7 +158,7 @@ public class HibernateDatabase {
 	}
 
 	public static List<TEWorld> getAllTEWorlds() {
-		logger.log(Level.INFO, "Getting all TEPlayers");
+		logger.log(Level.INFO, "Getting all TEWorlds");
 		Session s = sessionFactory.openSession();
 		Transaction tx = s.beginTransaction();
 		try {
@@ -168,7 +175,57 @@ public class HibernateDatabase {
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all teWorlds").replace("{criteria}", "*"));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all TEWorlds").replace("{criteria}", "*"));
+			return new ArrayList<>();
+		} finally {
+			s.close();
+		}
+	}
+
+	public static List<TECurrency> getAllTECurrencies() {
+		logger.log(Level.INFO, "Getting all TECurrencies");
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+			CriteriaQuery<TECurrency> criteriaQuery = criteriaBuilder.createQuery(TECurrency.class);
+			Root<TECurrency> root = criteriaQuery.from(TECurrency.class);
+			criteriaQuery.select(root);
+			TypedQuery<TECurrency> query = s.createQuery(criteriaQuery);
+			List<TECurrency> list = query.getResultList();
+			tx.commit();
+			return list;
+		} catch (NoResultException e) {
+			return new ArrayList<>();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all TEShops").replace("{criteria}", "*"));
+			return new ArrayList<>();
+		} finally {
+			s.close();
+		}
+	}
+
+	public static List<TEShop> getAllTEShops() {
+		logger.log(Level.INFO, "Getting all TEShops");
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+			CriteriaQuery<TEShop> criteriaQuery = criteriaBuilder.createQuery(TEShop.class);
+			Root<TEShop> root = criteriaQuery.from(TEShop.class);
+			criteriaQuery.select(root);
+			TypedQuery<TEShop> query = s.createQuery(criteriaQuery);
+			List<TEShop> list = query.getResultList();
+			tx.commit();
+			return list;
+		} catch (NoResultException e) {
+			return new ArrayList<>();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all TEShops").replace("{criteria}", "*"));
 			return new ArrayList<>();
 		} finally {
 			s.close();
@@ -188,7 +245,7 @@ public class HibernateDatabase {
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "tePlayer").replace("{criteria}", identifier.toString()));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "TEPlayer").replace("{criteria}", identifier.toString()));
 		} finally {
 			s.close();
 		}
@@ -212,7 +269,7 @@ public class HibernateDatabase {
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "tePlayer").replace("{criteria}", lastKnownName));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "TEPlayer").replace("{criteria}", lastKnownName));
 		} finally {
 			s.close();
 		}
@@ -230,7 +287,7 @@ public class HibernateDatabase {
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "teWorld").replace("{criteria}", identifier.toString()));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "TEWorld").replace("{criteria}", identifier.toString()));
 		} finally {
 			s.close();
 		}
@@ -238,7 +295,7 @@ public class HibernateDatabase {
 	}
 
 	public static List<TEWorld> getTEWorld(String name) {
-		logger.log(Level.INFO, "Getting TEPlayer(s) by name: " + name);
+		logger.log(Level.INFO, "Getting TEWorld(s) by name: " + name);
 		List<TEWorld> teWorlds = new ArrayList<>();
 		Session s = sessionFactory.openSession();
 		Transaction tx = s.beginTransaction();
@@ -254,11 +311,47 @@ public class HibernateDatabase {
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "teWorld").replace("{criteria}", name));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "TEWorld").replace("{criteria}", name));
 		} finally {
 			s.close();
 		}
 		return teWorlds;
+	}
+
+	public static TECurrency getTECurrency(UUID identifier) {
+		logger.log(Level.INFO, "Getting TECurrency by identifier: " + identifier.toString());
+		TECurrency teCurrency = null;
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			teCurrency = s.get(TECurrency.class, identifier);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "TECurrency").replace("{criteria}", identifier.toString()));
+		} finally {
+			s.close();
+		}
+		return teCurrency;
+	}
+
+	public static TEShop getTEShop(UUID identifier) {
+		logger.log(Level.INFO, "Getting TEShop by identifier: " + identifier.toString());
+		TEShop teShop = null;
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			teShop = s.get(TEShop.class, identifier);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "TEShop").replace("{criteria}", identifier.toString()));
+		} finally {
+			s.close();
+		}
+		return teShop;
 	}
 
 	// DELETE METHODS
@@ -297,4 +390,131 @@ public class HibernateDatabase {
 			s.close();
 		}
 	}
+
+	public static void deleteTECurrency(TECurrency teCurrency) {
+		logger.log(Level.INFO, "Deleting TECurrency by identifier: " + teCurrency.getIdentifier().toString());
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			Object o = s.get(TEPlayer.class, teCurrency.getIdentifier());
+			s.delete(o);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_DELETE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all fields"));
+			throw e;
+		} finally {
+			s.close();
+		}
+	}
+
+	public static void deleteTEShop(TEShop teShop) {
+		logger.log(Level.INFO, "Deleting TEShop by identifier: " + teShop.getIdentifier().toString());
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		try {
+			Object o = s.get(TEPlayer.class, teShop.getIdentifier());
+			s.delete(o);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_DELETE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "all fields"));
+			throw e;
+		} finally {
+			s.close();
+		}
+	}
+
+	// OTHER (SPECIALIZED) METHODS
+	public static Language getLanguageByPlayer(Player player) {
+		logger.log(Level.INFO, "Getting language of player by identifier: " + player.getUniqueId().toString());
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		Language lang;
+		try {
+			CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+			CriteriaQuery<Language> criteriaQuery = criteriaBuilder.createQuery(Language.class);
+
+			Root<TEPlayer> root = criteriaQuery.from(TEPlayer.class);
+			criteriaQuery.select(root.get("language"))
+					.where(criteriaBuilder.equal(root.get("identifier"), player.getUniqueId()));
+
+			Query<Language> query = s.createQuery(criteriaQuery);
+			lang = query.uniqueResult();
+			tx.commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "Language - TEPlayer").replace("{criteria}", player.getUniqueId().toString()));
+			throw e;
+		} finally {
+			s.close();
+		}
+		return lang;
+	}
+
+	public static TEServerShop getTEServerShopByLocation(Location location) {
+		logger.log(Level.INFO, "Getting server shop by location: " + location.toString());
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		TEServerShop shop;
+		try {
+			CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+			CriteriaQuery<TEServerShop> criteriaQuery = criteriaBuilder.createQuery(TEServerShop.class);
+
+			Root<TEServerShop> root = criteriaQuery.from(TEServerShop.class);
+			criteriaQuery.select(root)
+					.where(
+							criteriaBuilder.greaterThan(root.get("minX"), location.getX()),
+							criteriaBuilder.greaterThan(root.get("minY"), location.getY()),
+							criteriaBuilder.greaterThan(root.get("minZ"), location.getZ()),
+							criteriaBuilder.lessThan(root.get("maxX"), location.getX()),
+							criteriaBuilder.lessThan(root.get("maxY"), location.getY()),
+							criteriaBuilder.lessThan(root.get("maxZ"), location.getZ())
+					);
+			Query<TEServerShop> query = s.createQuery(criteriaQuery);
+			shop = query.uniqueResult();
+			tx.commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "TEServerShop").replace("{criteria}", location.toString()));
+			throw e;
+		} finally {
+			s.close();
+		}
+		return shop;
+	}
+
+	public static TETownyShop getTETownyShopByLocation(int x, int z) {
+		logger.log(Level.INFO, "Getting towny shop by coordinates: " + Integer.toString(x) + "," + Integer.toString(z));
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		TETownyShop shop;
+		try {
+			CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+			CriteriaQuery<TETownyShop> criteriaQuery = criteriaBuilder.createQuery(TETownyShop.class);
+
+			Root<TETownyShop> root = criteriaQuery.from(TETownyShop.class);
+			criteriaQuery.select(root)
+					.where(
+							criteriaBuilder.equal(root.get("x"), x),
+							criteriaBuilder.equal(root.get("z"), z)
+					);
+			Query<TETownyShop> query = s.createQuery(criteriaQuery);
+			shop = query.uniqueResult();
+			tx.commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "TETownyShop").replace("{criteria}", Integer.toString(x) + "," + Integer.toString(z)));
+			throw e;
+		} finally {
+			s.close();
+		}
+		return shop;
+	}
+
 }

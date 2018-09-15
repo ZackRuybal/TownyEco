@@ -5,11 +5,14 @@
 
 package de.articdive.townyeco.objects;
 
+import de.articdive.townyeco.lang.enums.Language;
 import de.articdive.townyeco.objects.interfaces.TownyEcoObject;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.UUID;
@@ -31,6 +34,10 @@ public class TEPlayer implements TownyEcoObject {
 
 	@Column(name = "lastOnline", columnDefinition = "BIGINT(20)")
 	private long lastOnline;
+
+	@Column(name = "language")
+	@Enumerated(EnumType.STRING)
+	private Language language;
 
 	public TEPlayer(UUID identifier) {
 		this.identifier = identifier;
@@ -56,6 +63,10 @@ public class TEPlayer implements TownyEcoObject {
 		return lastOnline;
 	}
 
+	public Language getLanguage() {
+		return language;
+	}
+
 	// Setters
 	private void setIdentifier(UUID identifier) {
 		this.identifier = identifier;
@@ -71,5 +82,9 @@ public class TEPlayer implements TownyEcoObject {
 
 	public void setLastOnline(long lastOnline) {
 		this.lastOnline = lastOnline;
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
 	}
 }

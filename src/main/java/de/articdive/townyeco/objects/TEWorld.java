@@ -39,6 +39,9 @@ public class TEWorld implements TownyEcoObject {
 	@OneToMany(mappedBy = "world")
 	private List<TECurrency> currencies;
 
+	@OneToMany(mappedBy = "world")
+	private List<TEShop> shops;
+
 	public TEWorld(UUID identifier) {
 		this.identifier = identifier;
 	}
@@ -61,6 +64,10 @@ public class TEWorld implements TownyEcoObject {
 		return currencies;
 	}
 
+	public List<TEShop> getShops() {
+		return shops;
+	}
+
 	// Setters
 	private void setIdentifier(UUID identifier) {
 		this.identifier = identifier;
@@ -76,5 +83,9 @@ public class TEWorld implements TownyEcoObject {
 
 	public void setCurrencies(List<TECurrency> currencies) {
 		this.currencies = currencies;
+	}
+
+	public void setShops(List<TEShop> shops) {
+		this.shops = shops;
 	}
 }

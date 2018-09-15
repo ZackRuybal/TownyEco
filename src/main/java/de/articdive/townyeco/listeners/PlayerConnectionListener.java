@@ -5,22 +5,17 @@
 
 package de.articdive.townyeco.listeners;
 
-import de.articdive.townyeco.TownyEco;
 import de.articdive.townyeco.database.HibernateDatabase;
+import de.articdive.townyeco.lang.enums.Language;
+import de.articdive.townyeco.listeners.abstractions.TownyEcoListener;
 import de.articdive.townyeco.objects.TEPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerConnectionListener implements Listener {
-
-	public PlayerConnectionListener() {
-		Bukkit.getPluginManager().registerEvents(this, TownyEco.getPlugin(TownyEco.class));
-	}
+public class PlayerConnectionListener extends TownyEcoListener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onLogin(PlayerLoginEvent event) {
@@ -35,8 +30,9 @@ public class PlayerConnectionListener implements Listener {
 				tePlayer.setLastKnownName(player.getName());
 				tePlayer.setRegistered(System.currentTimeMillis());
 				tePlayer.setLastOnline(System.currentTimeMillis());
-
+				tePlayer.setLanguage(Language.ENGLISH);
 			}
+			// TODO: Handle Changed Config Values (reset to default)
 			tePlayer.save();
 		}
 	}

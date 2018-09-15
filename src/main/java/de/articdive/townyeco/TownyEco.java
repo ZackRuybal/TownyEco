@@ -10,8 +10,10 @@ import de.articdive.townyeco.configuration.enums.ConfigYMLNodes;
 import de.articdive.townyeco.database.HibernateDatabase;
 import de.articdive.townyeco.lang.LanguageHandler;
 import de.articdive.townyeco.listeners.PlayerConnectionListener;
+import de.articdive.townyeco.listeners.PlayerMovementListener;
 import de.articdive.townyeco.listeners.ServerListener;
 import de.articdive.townyeco.listeners.ServerWorldListener;
+import de.articdive.townyeco.listeners.TownyListener;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,6 +25,8 @@ public final class TownyEco extends JavaPlugin {
 	private String version;
 	private final CommentedConfiguration mainConfig = new CommentedConfiguration(ConfigYMLNodes.class, getDataFolder().getPath() + File.separator + "config.yml");
 	private final ArrayList<Listener> listeners = new ArrayList<>();
+	// Accessible
+	public static boolean townyEnabled = false;
 
 	@Override
 	public void onEnable() {
@@ -33,6 +37,10 @@ public final class TownyEco extends JavaPlugin {
 		// Initialize Static classes.
 		LanguageHandler.initialize();
 		HibernateDatabase.initialize();
+		// Integration
+		if (getMainConfig().getBoolean(ConfigYMLNodes.TOWNY_INTEGRATION_ENABLED) && (getServer().getPluginManager().getPlugin("Towny") != null)) {
+			townyEnabled = true;
+		}
 		// Register Events
 		registerEvents();
 		// Register Commands
@@ -49,6 +57,10 @@ public final class TownyEco extends JavaPlugin {
 		listeners.add(new ServerListener());
 		listeners.add(new ServerWorldListener());
 		listeners.add(new PlayerConnectionListener());
+		listeners.add(new PlayerMovementListener());
+		if (townyEnabled) {
+			listeners.add(new TownyListener());
+		}
 	}
 
 
