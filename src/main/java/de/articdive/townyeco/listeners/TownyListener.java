@@ -12,6 +12,8 @@ import org.bukkit.event.EventPriority;
 
 public class TownyListener extends TownyEcoListener {
 
+	public TownyListener() {super();}
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onTownyCreateShopPlot(PlotChangeTypeEvent event) {
 

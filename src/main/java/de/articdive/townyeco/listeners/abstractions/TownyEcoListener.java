@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 
 public abstract class TownyEcoListener implements Listener {
 
-	public TownyEcoListener() {
+	protected TownyEcoListener() {
 		Bukkit.getPluginManager().registerEvents(this, TownyEco.getPlugin(TownyEco.class));
 	}
 }

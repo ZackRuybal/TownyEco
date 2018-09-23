@@ -14,7 +14,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -38,6 +43,24 @@ public class TEPlayer implements TownyEcoObject {
 	@Column(name = "language")
 	@Enumerated(EnumType.STRING)
 	private Language language;
+	@ManyToMany()
+	@JoinTable(name = "PLAYER_PLAYER_ACCESSIBILITY",
+			joinColumns = @JoinColumn(name = "player_identifier_1", columnDefinition = "VARCHAR(36)", referencedColumnName = "identifier"),
+			inverseJoinColumns = @JoinColumn(name = "player_identifier_2", columnDefinition = "VARCHAR(36)", referencedColumnName = "identifier"))
+	private List<TEPlayer> accessiblePlayers = new ArrayList<>();
+
+	@ManyToMany()
+	@JoinTable(name = "PLAYER_NPC_ACCESSIBILITY",
+			joinColumns = @JoinColumn(name = "player_identifier", columnDefinition = "VARCHAR(36)", referencedColumnName = "identifier"),
+			inverseJoinColumns = @JoinColumn(name = "npc_name", columnDefinition = "VARCHAR(255)", referencedColumnName = "name"))
+	private List<TENPC> accessibleNPCs = new ArrayList<>();
+
+
+	@ManyToMany(mappedBy = "accessiblePlayers")
+	private List<TEPlayer> playerAccessors;
+
+	@ManyToMany(mappedBy = "accessibleNPCs")
+	private List<TENPC> npcAccessors;
 
 	public TEPlayer(UUID identifier) {
 		this.identifier = identifier;
@@ -67,6 +90,22 @@ public class TEPlayer implements TownyEcoObject {
 		return language;
 	}
 
+	public List<TEPlayer> getAccessiblePlayers() {
+		return accessiblePlayers;
+	}
+
+	public List<TENPC> getAccessibleNPCs() {
+		return accessibleNPCs;
+	}
+
+	public List<TEPlayer> getPlayerAccessors() {
+		return playerAccessors;
+	}
+
+	public List<TENPC> getNpcAccessors() {
+		return npcAccessors;
+	}
+
 	// Setters
 	private void setIdentifier(UUID identifier) {
 		this.identifier = identifier;
@@ -86,5 +125,21 @@ public class TEPlayer implements TownyEcoObject {
 
 	public void setLanguage(Language language) {
 		this.language = language;
+	}
+
+	public void setAccessiblePlayers(List<TEPlayer> accessiblePlayers) {
+		this.accessiblePlayers = accessiblePlayers;
+	}
+
+	public void setAccessibleNPCs(List<TENPC> accessibleNPCs) {
+		this.accessibleNPCs = accessibleNPCs;
+	}
+
+	public void setPlayerAccessors(List<TEPlayer> playerAccessors) {
+		this.playerAccessors = playerAccessors;
+	}
+
+	public void setNpcAccessors(List<TENPC> npcAccessors) {
+		this.npcAccessors = npcAccessors;
 	}
 }

@@ -12,7 +12,7 @@ import de.articdive.commentedconfiguration.interfaces.ConfigNodes;
 public enum ConfigYMLNodes implements ConfigNodes {
 	// Version:
 	VERSION_HEADER("version", ""),
-	VERSION("version.version", "", "# This is the current version of Metropolis."),
+	VERSION("version.version", "", "# This is the current version of TownyEco."),
 	LAST_RUN_VERSION("version.last_run_version", "", "# This is for updating language files. Please do not edit."),
 	DATABASE_HEADER("database", "",
 			"",
@@ -75,6 +75,9 @@ public enum ConfigYMLNodes implements ConfigNodes {
 			"# This section configures TownyEco's integration with other plugins."),
 	TOWNY_INTEGRATION("integration.towny", "", "# All options regarding TownyEco's integration with Towny."),
 	TOWNY_INTEGRATION_ENABLED("integration.towny.enabled", "true", "# Should TownyEco integrate with Towny?"),
+	RESERVE_INTEGRATION("integration.reserve", "", "# All options regarding TownyEco's integration with Reserve."),
+	RESERVE_INTEGRATION_ENABLED("integration.reserve.enabled", "true", "# Should TownyEco integrate with Reserve?"),
+
 	MESSAGES_HEADER("messages", "",
 			"###########################################################",
 			"# +-----------------------------------------------------+ #",

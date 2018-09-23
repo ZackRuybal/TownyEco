@@ -17,6 +17,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerConnectionListener extends TownyEcoListener {
 
+	public PlayerConnectionListener() {super();}
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onLogin(PlayerLoginEvent event) {
 		if (event.getResult().equals(PlayerLoginEvent.Result.ALLOWED)) {

@@ -15,6 +15,8 @@ import org.bukkit.event.server.ServerLoadEvent;
 
 public class ServerListener extends TownyEcoListener {
 
+	public ServerListener() {super();}
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onServerLoadFinish(ServerLoadEvent event) {
 		// Set SessionFactory

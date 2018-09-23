@@ -37,6 +37,7 @@ import java.sql.Connection;
 
 class LiquibaseSchemaGenerator {
 	private static final TownyEco main = TownyEco.getPlugin(TownyEco.class);
+	private static final String dbTablePrefix = main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX);
 	private static boolean prefixed = false;
 
 	public static void liquify(Connection connection) throws LiquibaseException {
@@ -56,12 +57,18 @@ class LiquibaseSchemaGenerator {
 				PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(new File(main.getDatabaseChangelogFolder() + "/db.changelog-master.xml"))));
 				String str;
 				while ((str = reader.readLine()) != null) {
-					str = str.replace("/WORLDS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "WORLDS");
-					str = str.replace("/PLAYERS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "PLAYERS");
-					str = str.replace("/CURRENCIES/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "CURRENCIES");
-					str = str.replace("/CURRENCIES_BALANCES/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "CURRENCIES_BALANCES");
-					str = str.replace("/SHOPS/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "SHOPS");
-					str = str.replace("/SHOPS_STOCK/", main.getMainConfig().getString(ConfigYMLNodes.DATABASE_TABLE_PREFIX) + "SHOPS_STOCK");
+					str = str.replace("/WORLDS/", dbTablePrefix + "WORLDS");
+					str = str.replace("/PLAYERS/", dbTablePrefix  + "PLAYERS");
+					str = str.replace("/PLAYER_PLAYER_ACCESSIBILITY/", dbTablePrefix  + "PLAYER_PLAYER_ACCESSIBILITY");
+					str = str.replace("/NPCS/", dbTablePrefix  + "NPCS");
+					str = str.replace("/NPC_NPC_ACCESSIBILITY/", dbTablePrefix  + "NPC_NPC_ACCESSIBILITY");
+					str = str.replace("/PLAYER_NPC_ACCESSIBILITY/", dbTablePrefix  + "PLAYER_NPC_ACCESSIBILITY");
+					str = str.replace("/NPC_PLAYER_ACCESSIBILITY/", dbTablePrefix  + "NPC_PLAYER_ACCESSIBILITY");
+					str = str.replace("/CURRENCIES/", dbTablePrefix  + "CURRENCIES");
+					str = str.replace("/CURRENCIES_BALANCES_PLAYERS/", dbTablePrefix  + "CURRENCIES_BALANCES_PLAYERS");
+					str = str.replace("/CURRENCIES_BALANCES_NPCS/", dbTablePrefix  + "CURRENCIES_BALANCES_NPCS");
+					str = str.replace("/SHOPS/", dbTablePrefix  + "SHOPS");
+					str = str.replace("/SHOPS_STOCK/", dbTablePrefix  + "SHOPS_STOCK");
 					writer.println(str);
 				}
 				writer.close();

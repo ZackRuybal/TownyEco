@@ -32,8 +32,7 @@ public class TEWorld implements TownyEcoObject {
 	private String name;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "maincurrency_identifier", referencedColumnName = "identifier", columnDefinition = "VARCHAR(36)")
-	@Type(type = "uuid-char")
+	@JoinColumn(name = "maincurrency_name", referencedColumnName = "name", columnDefinition = "VARCHAR(36)")
 	private TECurrency mainCurrency;
 
 	@OneToMany(mappedBy = "world")

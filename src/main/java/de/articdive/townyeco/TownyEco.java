@@ -8,12 +8,14 @@ package de.articdive.townyeco;
 import de.articdive.commentedconfiguration.CommentedConfiguration;
 import de.articdive.townyeco.configuration.enums.ConfigYMLNodes;
 import de.articdive.townyeco.database.HibernateDatabase;
+import de.articdive.townyeco.economy.ReserveEconomy;
 import de.articdive.townyeco.lang.LanguageHandler;
 import de.articdive.townyeco.listeners.PlayerConnectionListener;
 import de.articdive.townyeco.listeners.PlayerMovementListener;
 import de.articdive.townyeco.listeners.ServerListener;
 import de.articdive.townyeco.listeners.ServerWorldListener;
 import de.articdive.townyeco.listeners.TownyListener;
+import net.tnemc.core.Reserve;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,6 +29,7 @@ public final class TownyEco extends JavaPlugin {
 	private final ArrayList<Listener> listeners = new ArrayList<>();
 	// Accessible
 	public static boolean townyEnabled = false;
+	public static boolean reserveEnabled = false;
 
 	@Override
 	public void onEnable() {
@@ -38,8 +41,16 @@ public final class TownyEco extends JavaPlugin {
 		LanguageHandler.initialize();
 		HibernateDatabase.initialize();
 		// Integration
-		if (getMainConfig().getBoolean(ConfigYMLNodes.TOWNY_INTEGRATION_ENABLED) && (getServer().getPluginManager().getPlugin("Towny") != null)) {
-			townyEnabled = true;
+		if (getMainConfig().getBoolean(ConfigYMLNodes.TOWNY_INTEGRATION_ENABLED)) {
+			if (getServer().getPluginManager().getPlugin("Towny") != null) {
+				townyEnabled = true;
+			}
+		}
+		if (getMainConfig().getBoolean(ConfigYMLNodes.RESERVE_INTEGRATION_ENABLED)) {
+			if (getServer().getPluginManager().getPlugin("Reserve") != null) {
+				Reserve.instance().registerProvider(new ReserveEconomy());
+				reserveEnabled = true;
+			}
 		}
 		// Register Events
 		registerEvents();

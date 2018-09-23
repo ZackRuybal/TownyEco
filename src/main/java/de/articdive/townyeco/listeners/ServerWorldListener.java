@@ -20,6 +20,8 @@ import java.util.List;
 public class ServerWorldListener extends TownyEcoListener {
 	static List<World> worlds = new ArrayList<>();
 
+	public ServerWorldListener() {super();}
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onWorldLoad(WorldLoadEvent event) {
 		worlds.add(event.getWorld());

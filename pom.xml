@@ -68,6 +68,14 @@
             <id>articdive-repo</id>
             <url>https://ci.articdive.de/plugin/repository/everything/</url>
         </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository>
+        <repository>
+            <id>reserve-repo</id>
+            <url>https://dl.bintray.com/theneweconomy/java/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -155,6 +163,12 @@
             <version>0.93.0.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/Towny.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>Reserve</artifactId>
+            <version>0.1.0.10</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

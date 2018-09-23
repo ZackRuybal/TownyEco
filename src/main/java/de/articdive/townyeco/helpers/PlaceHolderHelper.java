@@ -23,30 +23,28 @@ public class PlaceHolderHelper {
 	public static String replacePlaceHolders(String message, Language language, TownyEcoObject... townyEcoObjects) {
 		for (TownyEcoObject object : townyEcoObjects) {
 			SimpleDateFormat sdf = new SimpleDateFormat(LanguageHandler.getString(LanguageNodes.MESSAGES_TIMEFORMAT, language));
-			message.replace("{current-time}", sdf.format(new Date()));
+			message = message.replace("{current-time}", sdf.format(new Date()));
 			if (object instanceof TEPlayer) {
-				message.replace("{player-uuid}", ((TEPlayer) object).getIdentifier().toString());
-				message.replace("{player-name}", ((TEPlayer) object).getLastKnownName());
-				message.replace("{player-registered}", sdf.format(((TEPlayer) object).getRegistered()));
-				message.replace("{player-lastonline}", sdf.format(((TEPlayer) object).getLastOnline()));
-				message.replace("{player-language}", ((TEPlayer) object).getLanguage().getName());
+				message = message.replace("{player-uuid}", ((TEPlayer) object).getIdentifier().toString());
+				message = message.replace("{player-name}", ((TEPlayer) object).getLastKnownName());
+				message = message.replace("{player-registered}", sdf.format(((TEPlayer) object).getRegistered()));
+				message = message.replace("{player-lastonline}", sdf.format(((TEPlayer) object).getLastOnline()));
+				message = message.replace("{player-language}", ((TEPlayer) object).getLanguage().getName());
 			}
 			if (object instanceof TECurrency) {
-				message.replace("{currency-uuid}", (((TECurrency) object).getIdentifier().toString()));
-				message.replace("{currency-name}", ((TECurrency) object).getName());
+				message = message.replace("{currency-name}", ((TECurrency) object).getName());
 			}
 			if (object instanceof TEWorld) {
-				message.replace("{world-uuid}", ((TEWorld) object).getIdentifier().toString());
-				message.replace("{world-name}", ((TEWorld) object).getName());
-				message.replace("{world-maincurrency-uuid}", ((TEWorld) object).getMainCurrency().getIdentifier().toString());
-				message.replace("{world-maincurrency-name}", ((TEWorld) object).getMainCurrency().getName());
+				message = message.replace("{world-uuid}", ((TEWorld) object).getIdentifier().toString());
+				message = message.replace("{world-name}", ((TEWorld) object).getName());
+				message = message.replace("{world-maincurrency-name}", ((TEWorld) object).getMainCurrency().getName());
 				// TODO: Lists
 //				message.replace("{}", ((TEWorld) object).getCurrencies())
 //				message.replace("{}", ((TEWorld) object).getShops())
 			}
 			if (object instanceof TEShop) {
-				message.replace("{shop-uuid}", ((TEShop) object).getIdentifier().toString());
-				message.replace("{shop-name}", ((TEShop) object).getName());
+				message = message.replace("{shop-uuid}", ((TEShop) object).getIdentifier().toString());
+				message = message.replace("{shop-name}", ((TEShop) object).getName());
 				if (object instanceof TEServerShop) {
 				}
 				if (object instanceof TETownyShop) {

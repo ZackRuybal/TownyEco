@@ -16,22 +16,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Entity
 @Table(name = "CURRENCIES")
 public class TECurrency implements TownyEcoObject {
 
+
 	@Id
-	@Column(name = "identifier", columnDefinition = "VARCHAR(36)")
-	@Type(type = "uuid-char")
-	private UUID identifier;
+	@Column(name = "name", columnDefinition = "VARCHAR(255)")
+	private String name;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "world_identifier")
@@ -39,54 +37,57 @@ public class TECurrency implements TownyEcoObject {
 	private TEWorld world;
 
 	@ElementCollection
-	@CollectionTable(name = "CURRENCIES_BALANCES")
+	@CollectionTable(name = "CURRENCIES_BALANCES_PLAYERS")
 	@MapKeyJoinColumn(name = "player_identifier")
-	@MapKeyColumn(name = "player_identifier")
 	@Column(name = "balance")
-	private Map<TEPlayer, BigDecimal> balances = new HashMap<>();
+	private Map<TEPlayer, BigDecimal> playerBalances = new HashMap<>();
 
-	@Column(name = "name", columnDefinition = "VARCHAR(255)")
-	private String name;
+	@ElementCollection
+	@CollectionTable(name = "CURRENCIES_BALANCES_NPCS")
+	@MapKeyJoinColumn(name = "npc_name")
+	@Column(name = "balance")
+	private Map<TENPC, BigDecimal> NPCBalances = new HashMap<>();
 
 
-	public TECurrency(UUID identifier) {
-		this.identifier = identifier;
+	public TECurrency(String name) {
+		this.name = name;
 	}
 
 	@SuppressWarnings("unused")
 	private TECurrency() {}
 
 	// Getters
-	public UUID getIdentifier() {
-		return identifier;
+	public String getName() {
+		return name;
 	}
 
 	public TEWorld getWorld() {
 		return world;
 	}
 
-	public Map<TEPlayer, BigDecimal> getBalances() {
-		return balances;
+	public Map<TEPlayer, BigDecimal> getPlayerBalances() {
+		return playerBalances;
 	}
 
-	public String getName() {
-		return name;
+	public Map<TENPC, BigDecimal> getNPCBalances() {
+		return NPCBalances;
 	}
+
 
 	// Setters
-	private void setIdentifier(UUID identifier) {
-		this.identifier = identifier;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setWorld(TEWorld world) {
 		this.world = world;
 	}
 
-	public void setBalances(Map<TEPlayer, BigDecimal> balances) {
-		this.balances = balances;
+	public void setPlayerBalances(Map<TEPlayer, BigDecimal> playerBalances) {
+		this.playerBalances = playerBalances;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNPCBalances(Map<TENPC, BigDecimal> NPCBalances) {
+		this.NPCBalances = NPCBalances;
 	}
 }

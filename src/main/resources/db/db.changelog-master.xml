@@ -7,8 +7,14 @@
 <!DOCTYPE databaseChangeLog [
         <!ENTITY TEWorlds "/WORLDS/">
         <!ENTITY TEPlayers "/PLAYERS/">
+        <!ENTITY TEPlayerPlayerAccessibility "/PLAYER_PLAYER_ACCESSIBILITY/">
+        <!ENTITY TENPCs "/NPCS/">
+        <!ENTITY TENpcNpcAccessibility "/NPC_NPC_ACCESSIBILITY/">
+        <!ENTITY TEPlayerNpcAccessibility "/PLAYER_NPC_ACCESSIBILITY/">
+        <!ENTITY TENpcPlayerAccessibility "/NPC_PLAYER_ACCESSIBILITY/">
         <!ENTITY TECurrencies "/CURRENCIES/">
-        <!ENTITY TECurrenciesBalances "/CURRENCIES_BALANCES/">
+        <!ENTITY TECurrenciesPlayerBalances "/CURRENCIES_BALANCES_PLAYERS/">
+        <!ENTITY TECurrenciesNPCBalances "/CURRENCIES_BALANCES_NPCS/">
         <!ENTITY TEShops "/SHOPS/">
         <!ENTITY TEShopsStock "/SHOPS_STOCK/">
         ]>
@@ -24,7 +30,7 @@
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>
-            <column name="maincurrency_identifier" type="VARCHAR(36)"/>
+            <column name="maincurrency_name" type="VARCHAR(36)"/>
         </createTable>
 
         <createTable tableName="&TEPlayers;">
@@ -37,17 +43,50 @@
             <column name="language" type="VARCHAR(255)"/>
         </createTable>
 
+        <createTable tableName="&TEPlayerPlayerAccessibility;">
+            <column name="player_identifier_1" type="VARCHAR(36)"/>
+            <column name="player_identifier_2" type="VARCHAR(36)"/>
+        </createTable>
+
+        <createTable tableName="&TENPCs;">
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="registered" type="BIGINT(20)"/>
+        </createTable>
+
+        <createTable tableName="&TENpcNpcAccessibility;">
+            <column name="npc_name_1" type="VARCHAR(255)"/>
+            <column name="npc_name_2" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="&TEPlayerNpcAccessibility;">
+            <column name="player_identifier" type="VARCHAR(36)"/>
+            <column name="npc_name" type="VARCHAR(255)"/>
+        </createTable>
+
+
+        <createTable tableName="&TENpcPlayerAccessibility;">
+            <column name="npc_name" type="VARCHAR(255)"/>
+            <column name="player_identifier" type="VARCHAR(36)"/>
+        </createTable>
+
         <createTable tableName="&TECurrencies;">
-            <column name="identifier" type="VARCHAR(36)">
+            <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="world_identifier" type="VARCHAR(36)"/>
-            <column name="name" type="VARCHAR(255)"/>
         </createTable>
 
-        <createTable tableName="&TECurrenciesBalances;">
-            <column name="tecurrency_identifier" type="VARCHAR(36)"/>
+        <createTable tableName="&TECurrenciesPlayerBalances;">
+            <column name="tecurrency_name" type="VARCHAR(36)"/>
             <column name="player_identifier" type="VARCHAR(36)"/>
+            <column name="balance" type="DECIMAL"/>
+        </createTable>
+
+        <createTable tableName="&TECurrenciesNPCBalances;">
+            <column name="tecurrency_name" type="VARCHAR(36)"/>
+            <column name="npc_name" type="VARCHAR(36)"/>
             <column name="balance" type="DECIMAL"/>
         </createTable>
 

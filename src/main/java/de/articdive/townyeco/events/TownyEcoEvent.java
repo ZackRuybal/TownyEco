@@ -8,7 +8,7 @@ package de.articdive.townyeco.events;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class TownyEcoEvent extends Event {
+class TownyEcoEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
 	@Override
