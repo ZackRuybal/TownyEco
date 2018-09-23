@@ -41,6 +41,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -381,7 +382,7 @@ public class HibernateDatabase {
 			criteriaQuery.select(root)
 					.where(
 							criteriaBuilder.equal(root.get("name"), name),
-							criteriaBuilder.equal(root.get("world_identifier"), teWorld.getIdentifier().toString())
+							criteriaBuilder.equal(root.get("world").get("identifier"),  teWorld.getIdentifier())
 					);
 			TypedQuery<TECurrency> query = s.createQuery(criteriaQuery);
 			teCurrencies = query.getResultList();
@@ -432,7 +433,7 @@ public class HibernateDatabase {
 							criteriaBuilder.lessThan(root.get("maxX"), x),
 							criteriaBuilder.lessThan(root.get("maxY"), y),
 							criteriaBuilder.lessThan(root.get("maxZ"), z),
-							criteriaBuilder.equal(root.get("world_identifier"), worldIdentifier)
+							criteriaBuilder.equal(root.get("world").get("identifier"),  worldIdentifier)
 					);
 			Query<TEServerShop> query = s.createQuery(criteriaQuery);
 			shop = query.uniqueResult();
@@ -462,7 +463,7 @@ public class HibernateDatabase {
 					.where(
 							criteriaBuilder.equal(root.get("x"), x),
 							criteriaBuilder.equal(root.get("z"), z),
-							criteriaBuilder.equal(root.get("world_identifier"), worldIdentifier)
+							criteriaBuilder.equal(root.get("world").get("identifier"),  worldIdentifier)
 					);
 			Query<TETownyShop> query = s.createQuery(criteriaQuery);
 			shop = query.uniqueResult();

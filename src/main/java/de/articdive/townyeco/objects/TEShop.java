@@ -92,7 +92,7 @@ public abstract class TEShop implements TownyEcoObject {
 	}
 
 	// Setters
-	private void setIdentifier(UUID identifier) {
+	public void setIdentifier(UUID identifier) {
 		this.identifier = identifier;
 	}
 
