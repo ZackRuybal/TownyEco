@@ -224,7 +224,7 @@ class HibernateUtil {
 	}
 
 	private static void saveObject(TownyEcoObject object, SessionFactory sessionFactory) {
-		logger.log(Level.INFO, "Saving Object: " + object.getType());
+		logger.log(Level.INFO, "Saving Object: " + object.getObjectType());
 		Session s = sessionFactory.openSession();
 		Transaction tx = s.beginTransaction();
 		try {
@@ -233,7 +233,7 @@ class HibernateUtil {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_SAVE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{objects}", object.getType()));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_SAVE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{objects}", object.getObjectType()));
 		} finally {
 			s.close();
 		}

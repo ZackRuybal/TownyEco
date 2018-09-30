@@ -12,5 +12,5 @@ public interface TownyEcoObject {
 		HibernateDatabase.saveObject(this);
 	}
 
-	default String getType() {return this.getClass().getSimpleName();}
+	default String getObjectType() {return this.getClass().getSimpleName();}
 }

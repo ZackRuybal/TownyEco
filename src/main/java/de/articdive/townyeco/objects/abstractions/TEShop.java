@@ -1,31 +1,27 @@
-// Created by Lukas Mansour on the 2018-09-11 at 18:44:55
+// Created by Lukas Mansour on the 2018-09-26 at 16:59:37
 // This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivative International License. (Short Code: CC BY-NC-ND 4.0 )
 // To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/
 // Or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-package de.articdive.townyeco.objects;
+package de.articdive.townyeco.objects.abstractions;
 
+import de.articdive.townyeco.objects.TEWorld;
 import de.articdive.townyeco.objects.interfaces.TownyEcoObject;
-import org.bukkit.Material;
+import de.articdive.townyeco.objects.trade_objects.abstractions.TETradeObject;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -39,20 +35,17 @@ public abstract class TEShop implements TownyEcoObject {
 	private UUID identifier;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "world_identifier")
+	@JoinColumn(name = "world_identifier", columnDefinition = "VARCHAR(36)")
 	@Type(type = "uuid-char")
 	private TEWorld world;
 
-	TEShop(UUID identifier) {
+	protected TEShop(UUID identifier) {
 		this.identifier = identifier;
 	}
 
-	@ElementCollection
-	@CollectionTable(name = "SHOPS_STOCK")
-	@MapKeyEnumerated(EnumType.STRING)
-	@MapKeyColumn(name = "material")
-	@Column(name = "amount")
-	private Map<Material, Integer> stock = new HashMap<>();
+
+	@OneToMany(mappedBy = "shop")
+	private List<TETradeObject> tradeObjects;
 
 	@Column(name = "name")
 	private String name;
@@ -75,8 +68,8 @@ public abstract class TEShop implements TownyEcoObject {
 		return world;
 	}
 
-	public Map<Material, Integer> getStock() {
-		return stock;
+	public List<TETradeObject> getTradeObjects() {
+		return tradeObjects;
 	}
 
 	public String getName() {
@@ -100,8 +93,8 @@ public abstract class TEShop implements TownyEcoObject {
 		this.world = world;
 	}
 
-	public void setStock(Map<Material, Integer> stock) {
-		this.stock = stock;
+	public void setTradeObjects(List<TETradeObject> tradeObjects) {
+		this.tradeObjects = tradeObjects;
 	}
 
 	public void setName(String name) {

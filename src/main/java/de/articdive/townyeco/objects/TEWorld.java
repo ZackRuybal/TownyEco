@@ -5,6 +5,7 @@
 
 package de.articdive.townyeco.objects;
 
+import de.articdive.townyeco.objects.abstractions.TEShop;
 import de.articdive.townyeco.objects.interfaces.TownyEcoObject;
 import org.hibernate.annotations.Type;
 

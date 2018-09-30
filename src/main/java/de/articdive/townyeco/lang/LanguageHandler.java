@@ -151,6 +151,10 @@ public class LanguageHandler {
 		return languages.get(lang).getString((lang.getName() + "." + node.getNode()).toLowerCase());
 	}
 
+	public static String[] getStringArray(LanguageNodes node, Language lang) {
+		return languages.get(lang).getStringList((lang.getName() + "." + node.getNode()).toLowerCase()).toArray(new String[0]);
+	}
+
 	@SuppressWarnings("ResultOfMethodCallIgnored")
 	private static File unpackResourceFile(String filePath, String resource) {
 

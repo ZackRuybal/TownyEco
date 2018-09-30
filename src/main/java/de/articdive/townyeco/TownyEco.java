@@ -6,9 +6,11 @@
 package de.articdive.townyeco;
 
 import de.articdive.commentedconfiguration.CommentedConfiguration;
+import de.articdive.townyeco.commands.TownyEcoMainCommand;
 import de.articdive.townyeco.configuration.enums.ConfigYMLNodes;
 import de.articdive.townyeco.database.HibernateDatabase;
 import de.articdive.townyeco.economy.ReserveEconomy;
+import de.articdive.townyeco.helpers.ReflectionHelper;
 import de.articdive.townyeco.lang.LanguageHandler;
 import de.articdive.townyeco.listeners.PlayerConnectionListener;
 import de.articdive.townyeco.listeners.PlayerMovementListener;
@@ -16,6 +18,7 @@ import de.articdive.townyeco.listeners.ServerListener;
 import de.articdive.townyeco.listeners.ServerWorldListener;
 import de.articdive.townyeco.listeners.TownyListener;
 import net.tnemc.core.Reserve;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,21 +28,25 @@ import java.util.ArrayList;
 public final class TownyEco extends JavaPlugin {
 
 	private String version;
+	private String minecraftVersion;
 	private final CommentedConfiguration mainConfig = new CommentedConfiguration(ConfigYMLNodes.class, getDataFolder().getPath() + File.separator + "config.yml");
 	private final ArrayList<Listener> listeners = new ArrayList<>();
 	// Accessible
-	public static boolean townyEnabled = false;
-	public static boolean reserveEnabled = false;
+	private boolean townyEnabled = false;
+	private boolean reserveEnabled = false;
+	private final TownyEcoMainCommand mainCommand = new TownyEcoMainCommand();
 
 	@Override
 	public void onEnable() {
 		// Update version.
 		version = this.getDescription().getVersion();
+		minecraftVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 		// Update Configuration Version.
 		mainConfig.setNode(ConfigYMLNodes.VERSION, version);
 		// Initialize Static classes.
 		LanguageHandler.initialize();
 		HibernateDatabase.initialize();
+		ReflectionHelper.initialize();
 		// Integration
 		if (getMainConfig().getBoolean(ConfigYMLNodes.TOWNY_INTEGRATION_ENABLED)) {
 			if (getServer().getPluginManager().getPlugin("Towny") != null) {
@@ -76,7 +83,8 @@ public final class TownyEco extends JavaPlugin {
 
 
 	private void registerCommands() {
-		// TODO: Add Commands
+		getCommand("townyeco").setTabCompleter(mainCommand);
+		getCommand("townyeco").setExecutor(mainCommand);
 	}
 
 	/**
@@ -140,5 +148,32 @@ public final class TownyEco extends JavaPlugin {
 	 */
 	public ArrayList<Listener> getListeners() {
 		return listeners;
+	}
+
+	/**
+	 * Is Towny Integration enabled.
+	 *
+	 * @return - true/false for Towny Integration.
+	 */
+	public boolean isTownyEnabled() {
+		return townyEnabled;
+	}
+
+	/**
+	 * Is Reserve Integration enabled.
+	 *
+	 * @return - true/false for Reserve Integration.
+	 */
+	public boolean isReserveEnabled() {
+		return reserveEnabled;
+	}
+
+	/**
+	 * Get Minecraft's server version.
+	 *
+	 * @return - Minecraft's server version.
+	 */
+	public String getMinecraftVersion() {
+		return minecraftVersion;
 	}
 }

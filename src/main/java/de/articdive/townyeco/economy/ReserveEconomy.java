@@ -16,7 +16,9 @@ import org.bukkit.Bukkit;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class ReserveEconomy implements EconomyAPI {
+	private static final TownyEco main = TownyEco.getPlugin(TownyEco.class);
 
 	@Override
 	public String name() {
@@ -30,7 +32,7 @@ public class ReserveEconomy implements EconomyAPI {
 
 	@Override
 	public boolean enabled() {
-		return TownyEco.reserveEnabled;
+		return main.isReserveEnabled();
 	}
 
 	@Override

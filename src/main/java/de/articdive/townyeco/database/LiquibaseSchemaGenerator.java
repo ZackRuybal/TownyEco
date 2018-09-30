@@ -68,7 +68,7 @@ class LiquibaseSchemaGenerator {
 					str = str.replace("/CURRENCIES_BALANCES_PLAYERS/", dbTablePrefix  + "CURRENCIES_BALANCES_PLAYERS");
 					str = str.replace("/CURRENCIES_BALANCES_NPCS/", dbTablePrefix  + "CURRENCIES_BALANCES_NPCS");
 					str = str.replace("/SHOPS/", dbTablePrefix  + "SHOPS");
-					str = str.replace("/SHOPS_STOCK/", dbTablePrefix  + "SHOPS_STOCK");
+					str = str.replace("/TRADE_OBJECTS/", dbTablePrefix  + "TRADE_OBJECTS");
 					writer.println(str);
 				}
 				writer.close();

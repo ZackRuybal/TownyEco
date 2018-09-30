@@ -8,7 +8,25 @@ german:
       failed_to_load_object: "There has been an error trying to load the objects(s): {object} by: {criteria}"
       failed_to_delete_object: "There has been an error trying to delete the objects(s): {object}"
   messages:
-    timeformat: 'dd-MM-yyyy'
     shops:
       default_enterance: 'Welcome to {shop-name}, {player-name}'
       default_exit: 'Goodbye, {player-name}'
+  placeholders:
+    timeformat: 'dd-MM-yyyy'
+    version: '&d{version}'
+  commands:
+    townyeco:
+      main:
+        menu:
+        - '&7[&b#####&7] &3/TownyEco &7[&b#####&7]'
+        - '&3/TownyEco info'
+        - '&3/TownyEco options &b[...]'
+        - '&3/TownyEco version'
+        info:
+        - '&7[&b#####&7] &3Server Information &7[&b#####&7]'
+        - '&aThis server has &2{player-amount} &aplayers.'
+        options:
+        - '&7[&b#####&7] &3Your Options &7[&b#####&7]'
+        - '&aLanguage: &c{player-language}&a'
+        options_language: '&aValid Languages are: &c{player-languages}&a.'
+        version: '&aThis server is running TownyEco version: {townyeco-version}&a.'

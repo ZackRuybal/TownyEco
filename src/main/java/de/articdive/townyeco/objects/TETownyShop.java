@@ -5,6 +5,8 @@
 
 package de.articdive.townyeco.objects;
 
+import de.articdive.townyeco.objects.abstractions.TEShop;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

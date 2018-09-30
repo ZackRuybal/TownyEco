@@ -16,7 +16,7 @@
         <!ENTITY TECurrenciesPlayerBalances "/CURRENCIES_BALANCES_PLAYERS/">
         <!ENTITY TECurrenciesNPCBalances "/CURRENCIES_BALANCES_NPCS/">
         <!ENTITY TEShops "/SHOPS/">
-        <!ENTITY TEShopsStock "/SHOPS_STOCK/">
+        <!ENTITY TETradeObjects "/TRADE_OBJECTS/">
         ]>
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
@@ -112,11 +112,44 @@
             <column name="z" type="INTEGER"/>
         </createTable>
 
-        <createTable tableName="&TEShopsStock;">
-            <column name="teshop_identifier" type="VARCHAR(36)"/>
-            <column name="material" type="VARCHAR(255)"/>
-            <column name="amount" type="INTEGER"/>
+        <createTable tableName="&TETradeObjects;">
+            <!-- TETradeObject -->
+            <column name="identifier" type="VARCHAR(36)">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="tradeObjectType" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="displayName" type="VARCHAR(255)"/>
+            <column name="shop_identifier" type="VARCHAR(36)"/>
+            <column name="dynamic" type="BIT(1)"/>
+            <column name="staticPrice" type="DECIMAL"/>
+            <column name="price" type="DECIMAL"/>
+            <column name="median" type="DECIMAL"/>
+            <column name="startPrice" type="DECIMAL"/>
+            <column name="maxPrice" type="DECIMAL"/>
+            <column name="minPrice" type="DECIMAL"/>
+            <column name="maxStock" type="INTEGER"/>
+            <column name="stock" type="INTEGER"/>
+            <!-- TEItemTradeObject -->
+            <column name="itemData" type="MEDIUMTEXT"/>
         </createTable>
 
+        <addUniqueConstraint tableName="&TETradeObjects;" columnNames="name,displayName,shop_identifier,tradeObjectType"/>
+
+        <addForeignKeyConstraint baseTableName="&TEWorlds;" baseColumnNames="maincurrency_name"
+                                 constraintName="world_maincurrency" referencedTableName="&TECurrencies;"
+                                 referencedColumnNames="name"/>
+
+        <addForeignKeyConstraint baseTableName="&TECurrencies;" baseColumnNames="world_identifier"
+                                 constraintName="currency_world" referencedTableName="&TEWorlds;"
+                                 referencedColumnNames="identifier"/>
+
+        <addForeignKeyConstraint baseTableName="&TEShops;" baseColumnNames="world_identifier"
+                                 constraintName="shop_world" referencedTableName="&TEWorlds;"
+                                 referencedColumnNames="identifier"/>
+
+        <addForeignKeyConstraint baseTableName="&TETradeObjects;" baseColumnNames="shop_identifier"
+                                 constraintName="tradeObject_shop" referencedTableName="&TEShops;"
+                                 referencedColumnNames="identifier"/>
     </changeSet>
 </databaseChangeLog>

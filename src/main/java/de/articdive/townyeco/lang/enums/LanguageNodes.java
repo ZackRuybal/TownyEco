@@ -14,9 +14,15 @@ public enum LanguageNodes {
 	LOGGING_DATABASE_FAILED_TO_DELETE_OBJECT("logging.database.failed_to_delete_object"),
 	LOGGING_DATABASE_DB_CONVERSION_FAILED("logging.database.db_conversion_failed"),
 	// Messages
-	MESSAGES_TIMEFORMAT("messages.timeformat"),
+	PLACEHOLDERS_TIMEFORMAT("placeholders.timeformat"),
+	PLACEHOLDERS_VERSION("placeholders.version"),
 	MESSAGES_SHOPS_DEFAULT_ENTRANCE("messages.shops.default_enterance"),
-	MESSAGES_SHOPS_DEFAULT_EXIT("messages.shops.default_exit");
+	MESSAGES_SHOPS_DEFAULT_EXIT("messages.shops.default_exit"),
+	COMMANDS_TOWNYECO_MENU("commands.townyeco.main.menu"),
+	COMMANDS_TOWNYECO_INFO("commands.townyeco.main.info"),
+	COMMANDS_TOWNYECO_OPTIONS("commands.townyeco.main.options"),
+	COMMANDS_TOWNYECO_VERSION("commands.townyeco.main.version"),
+	COMMANDS_TOWNYECO_OPTIONS_LANGUAGE("commands.townyeco.main.options_language");
 
 	private final String node;
 

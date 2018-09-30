@@ -10,14 +10,15 @@ import com.palmergames.bukkit.towny.object.TownyUniverse;
 import de.articdive.townyeco.TownyEco;
 import de.articdive.townyeco.database.HibernateDatabase;
 import de.articdive.townyeco.listeners.abstractions.TownyEcoListener;
-import de.articdive.townyeco.objects.TEShop;
-import de.articdive.townyeco.workers.ShopMessageWorker;
+import de.articdive.townyeco.objects.abstractions.TEShop;
+import de.articdive.townyeco.workers.MessageWorker;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class PlayerMovementListener extends TownyEcoListener {
+	private static final TownyEco main = TownyEco.getPlugin(TownyEco.class);
 
 	public PlayerMovementListener() {super();}
 
@@ -28,7 +29,7 @@ public class PlayerMovementListener extends TownyEcoListener {
 			Location to = event.getTo();
 			// Shops
 			TEShop fromShop = HibernateDatabase.getTEServerShopByLocation(from.getWorld().getUID(), from.getBlockX(), from.getBlockY(), from.getBlockZ());
-			if (TownyEco.townyEnabled) {
+			if (main.isTownyEnabled()) {
 				if (fromShop == null) {
 					TownBlock townBlock = TownyUniverse.getTownBlock(from);
 					if (townBlock != null) {
@@ -37,7 +38,7 @@ public class PlayerMovementListener extends TownyEcoListener {
 				}
 			}
 			TEShop toShop = HibernateDatabase.getTEServerShopByLocation(to.getWorld().getUID(), to.getBlockX(), to.getBlockY(), to.getBlockZ());
-			if (TownyEco.townyEnabled) {
+			if (main.isTownyEnabled()) {
 				if (toShop == null) {
 					TownBlock townBlock = TownyUniverse.getTownBlock(to);
 					if (townBlock != null) {
@@ -47,12 +48,12 @@ public class PlayerMovementListener extends TownyEcoListener {
 			}
 			if (fromShop == null) {
 				if (toShop != null) {
-					ShopMessageWorker.sendEnterMessage(event.getPlayer(), toShop);
+					MessageWorker.sendShopEnterMessage(event.getPlayer(), toShop);
 				}
 			}
 			if (toShop == null) {
 				if (fromShop != null) {
-					ShopMessageWorker.sendExitMessage(event.getPlayer(), fromShop);
+					MessageWorker.sendShopExitMessage(event.getPlayer(), fromShop);
 				}
 			}
 		}

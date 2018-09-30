@@ -14,9 +14,9 @@ import de.articdive.townyeco.objects.TECurrency;
 import de.articdive.townyeco.objects.TENPC;
 import de.articdive.townyeco.objects.TEPlayer;
 import de.articdive.townyeco.objects.TEServerShop;
-import de.articdive.townyeco.objects.TEShop;
 import de.articdive.townyeco.objects.TETownyShop;
 import de.articdive.townyeco.objects.TEWorld;
+import de.articdive.townyeco.objects.abstractions.TEShop;
 import de.articdive.townyeco.objects.interfaces.TownyEcoObject;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -41,7 +41,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -117,7 +116,7 @@ public class HibernateDatabase {
 
 
 	public static void saveObject(TownyEcoObject object) {
-		logger.log(Level.INFO, "Saving Object: " + object.getType());
+		logger.log(Level.INFO, "Saving Object: " + object.getObjectType());
 		Session s = sessionFactory.openSession();
 		Transaction tx = s.beginTransaction();
 		try {
@@ -126,7 +125,7 @@ public class HibernateDatabase {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			tx.rollback();
-			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_SAVE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{objects}", object.getType()));
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_SAVE_OBJECT, LanguageHandler.getPluginLanguage()).replace("{objects}", object.getObjectType()));
 		} finally {
 			s.close();
 		}
@@ -382,7 +381,7 @@ public class HibernateDatabase {
 			criteriaQuery.select(root)
 					.where(
 							criteriaBuilder.equal(root.get("name"), name),
-							criteriaBuilder.equal(root.get("world").get("identifier"),  teWorld.getIdentifier())
+							criteriaBuilder.equal(root.get("world").get("identifier"), teWorld.getIdentifier())
 					);
 			TypedQuery<TECurrency> query = s.createQuery(criteriaQuery);
 			teCurrencies = query.getResultList();
@@ -433,7 +432,7 @@ public class HibernateDatabase {
 							criteriaBuilder.lessThan(root.get("maxX"), x),
 							criteriaBuilder.lessThan(root.get("maxY"), y),
 							criteriaBuilder.lessThan(root.get("maxZ"), z),
-							criteriaBuilder.equal(root.get("world").get("identifier"),  worldIdentifier)
+							criteriaBuilder.equal(root.get("world").get("identifier"), worldIdentifier)
 					);
 			Query<TEServerShop> query = s.createQuery(criteriaQuery);
 			shop = query.uniqueResult();
@@ -463,7 +462,7 @@ public class HibernateDatabase {
 					.where(
 							criteriaBuilder.equal(root.get("x"), x),
 							criteriaBuilder.equal(root.get("z"), z),
-							criteriaBuilder.equal(root.get("world").get("identifier"),  worldIdentifier)
+							criteriaBuilder.equal(root.get("world").get("identifier"), worldIdentifier)
 					);
 			Query<TETownyShop> query = s.createQuery(criteriaQuery);
 			shop = query.uniqueResult();
@@ -739,5 +738,32 @@ public class HibernateDatabase {
 			s.close();
 		}
 		return amount > 0;
+	}
+
+	// AMOUNT METHODS
+	public static long getAmountOfTEPlayers() {
+		logger.log(Level.INFO, "Getting amount of TEPlayers");
+		Session s = sessionFactory.openSession();
+		Transaction tx = s.beginTransaction();
+		Long amount;
+		try {
+			CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+			CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+			Root<TEPlayer> root = criteriaQuery.from(TEPlayer.class);
+
+			criteriaQuery.select(criteriaBuilder.count(root));
+
+			Query<Long> query = s.createQuery(criteriaQuery);
+			amount = query.getSingleResult();
+			tx.commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			tx.rollback();
+			main.getLogger().severe(LanguageHandler.getString(LanguageNodes.LOGGING_DATABASE_FAILED_TO_LOAD_OBJECT, LanguageHandler.getPluginLanguage()).replace("{object}", "Amount - TEPlayer").replace("{criteria}", "*"));
+			throw e;
+		} finally {
+			s.close();
+		}
+		return amount;
 	}
 }

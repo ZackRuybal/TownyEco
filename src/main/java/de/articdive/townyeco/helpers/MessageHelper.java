@@ -9,6 +9,9 @@ import de.articdive.townyeco.TownyEco;
 import de.articdive.townyeco.configuration.enums.ConfigYMLNodes;
 import org.bukkit.ChatColor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MessageHelper {
 	private static final TownyEco main = TownyEco.getPlugin(TownyEco.class);
 	private static final boolean prefixed = main.getMainConfig().getBoolean(ConfigYMLNodes.MESSAGES_PREFIX_ENABLED);
@@ -20,5 +23,14 @@ public class MessageHelper {
 			return ChatColor.translateAlternateColorCodes('&', prefix + message);
 		}
 		return ChatColor.translateAlternateColorCodes('&', message);
+	}
+
+	public static String[] finalizeMessage(String[] messages) {
+		List<String> newMessages = new ArrayList<>();
+		for (String message : messages) {
+			// No Prefix for lists.
+			newMessages.add(ChatColor.translateAlternateColorCodes('&', message));
+		}
+		return newMessages.toArray(new String[0]);
 	}
 }
