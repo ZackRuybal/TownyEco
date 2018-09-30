@@ -15,6 +15,7 @@ german:
     timeformat: 'dd-MM-yyyy'
     version: '&d{version}'
   commands:
+    console_not_available: '&4This command is not available for the console!'
     townyeco:
       main:
         menu:
@@ -24,9 +25,11 @@ german:
         - '&3/TownyEco version'
         info:
         - '&7[&b#####&7] &3Server Information &7[&b#####&7]'
-        - '&aThis server has &2{player-amount} &aplayers.'
+        - '&aThis server has &2{player-amount} &aplayer(s).'
         options:
         - '&7[&b#####&7] &3Your Options &7[&b#####&7]'
         - '&aLanguage: &c{player-language}&a'
         options_language: '&aValid Languages are: &c{player-languages}&a.'
+        options_language_invalid: '&c{input} &4is not a valid Language!'
+        options_language_successful: '&aYour language has been set to {player-language}'
         version: '&aThis server is running TownyEco version: {townyeco-version}&a.'

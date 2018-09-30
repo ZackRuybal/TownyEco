@@ -18,11 +18,14 @@ public enum LanguageNodes {
 	PLACEHOLDERS_VERSION("placeholders.version"),
 	MESSAGES_SHOPS_DEFAULT_ENTRANCE("messages.shops.default_enterance"),
 	MESSAGES_SHOPS_DEFAULT_EXIT("messages.shops.default_exit"),
+	COMMANDS_CONSOLE_NOT_AVAILABLE("commands.console_not_available"),
 	COMMANDS_TOWNYECO_MENU("commands.townyeco.main.menu"),
 	COMMANDS_TOWNYECO_INFO("commands.townyeco.main.info"),
 	COMMANDS_TOWNYECO_OPTIONS("commands.townyeco.main.options"),
 	COMMANDS_TOWNYECO_VERSION("commands.townyeco.main.version"),
-	COMMANDS_TOWNYECO_OPTIONS_LANGUAGE("commands.townyeco.main.options_language");
+	COMMANDS_TOWNYECO_OPTIONS_LANGUAGE("commands.townyeco.main.options_language"),
+	COMMANDS_TOWNYECO_OPTIONS_LANGUAGE_INVALID("commands.townyeco.main.options_language_invalid"),
+	COMMANDS_TOWNYECO_OPTIONS_LANGUAGE_SUCCESSFUL("commands.townyeco.main.options_language_successful");
 
 	private final String node;
 

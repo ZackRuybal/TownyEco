@@ -7,10 +7,14 @@ package de.articdive.townyeco.commands;
 
 import de.articdive.townyeco.commands.interfaces.TabCompletionEnum;
 import de.articdive.townyeco.commands.interfaces.TownyEcoCommand;
+import de.articdive.townyeco.database.HibernateDatabase;
 import de.articdive.townyeco.helpers.TabValueHelper;
+import de.articdive.townyeco.lang.enums.Language;
+import de.articdive.townyeco.objects.TEPlayer;
 import de.articdive.townyeco.workers.MessageWorker;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +27,11 @@ public class TownyEcoMainCommand implements TownyEcoCommand {
 				MessageWorker.sendMainCommandMenuMessage(sender);
 				return true;
 			}
+			boolean isPlayer = false;
+			if (sender instanceof Player) {
+				isPlayer = true;
+			}
+			// Concrete
 			if (args.length == 1) {
 				switch (args[0]) {
 					case "info": {
@@ -39,6 +48,7 @@ public class TownyEcoMainCommand implements TownyEcoCommand {
 					}
 				}
 			}
+			// Concrete
 			if (args.length == 2) {
 				switch (args[0] + " " + args[1]) {
 					case "options language": {
@@ -47,6 +57,33 @@ public class TownyEcoMainCommand implements TownyEcoCommand {
 					}
 				}
 			}
+			// Flexible
+			if (args.length >= 3) {
+				switch (args[0] + " " + args[1]) {
+					case "options language": {
+						if (isPlayer) {
+							try {
+								TEPlayer tePlayer = HibernateDatabase.getTEPlayer(((Player) sender).getUniqueId());
+								if (tePlayer == null) {
+									return false;
+								}
+								Language newLanguage = Language.valueOf(args[2].toUpperCase());
+								tePlayer.setLanguage(newLanguage);
+								tePlayer.save();
+								MessageWorker.sendMainCommandOptionsLanguageSuccessfulMessage(sender);
+								return true;
+							} catch (IllegalArgumentException e) {
+								MessageWorker.sendMainCommandOptionsLanguageInvalidMessage(sender, args[2]);
+								return true;
+							}
+						} else {
+							MessageWorker.sendConsoleNotAvailableMessage(sender);
+							return true;
+						}
+					}
+				}
+			}
+			MessageWorker.sendMainCommandMenuMessage(sender);
 			return true;
 		} else {
 			return false;

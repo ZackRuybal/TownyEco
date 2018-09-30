@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class PlaceHolderHelper {
 	private static final TownyEco main = TownyEco.getPlugin(TownyEco.class);
 
-	public static String replacePlaceHolders(String message, Language language, TownyEcoObject... townyEcoObjects) {
+	public static String replacePlaceHolders(String message, Language language, Object... townyEcoObjects) {
 		SimpleDateFormat sdf = new SimpleDateFormat(LanguageHandler.getString(LanguageNodes.PLACEHOLDERS_TIMEFORMAT, language));
 
 		// Global Variables
@@ -39,7 +39,10 @@ public class PlaceHolderHelper {
 		message = message.replace("{player-language}", language.getName().substring(0, 1).toUpperCase() + language.getName().substring(1).toLowerCase());
 		message = message.replace("{player-languages}", Arrays.stream(LanguageHandler.getPlayerLanguages().toArray(new Language[0])).map(language1 -> language1.getName().substring(0, 1).toUpperCase() + language1.getName().substring(1).toLowerCase()).collect(Collectors.joining(", ")));
 
-		for (TownyEcoObject object : townyEcoObjects) {
+		for (Object object : townyEcoObjects) {
+			if (object instanceof String) {
+				message = message.replace("{input}", (String) object);
+			}
 			if (object instanceof TEPlayer) {
 				message = message.replace("{player-uuid}", ((TEPlayer) object).getIdentifier().toString());
 				message = message.replace("{player-name}", ((TEPlayer) object).getLastKnownName());
@@ -70,7 +73,7 @@ public class PlaceHolderHelper {
 		return message;
 	}
 
-	public static String[] replacePlaceHolders(String[] messages, Language language, TownyEcoObject... townyEcoObjects) {
+	public static String[] replacePlaceHolders(String[] messages, Language language, Object... townyEcoObjects) {
 		List<String> newMessages = new ArrayList<>();
 		for (String message : messages) {
 			newMessages.add(replacePlaceHolders(message, language, townyEcoObjects));

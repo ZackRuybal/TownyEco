@@ -14,7 +14,6 @@ import de.articdive.townyeco.lang.LanguageHandler;
 import de.articdive.townyeco.lang.enums.Language;
 import de.articdive.townyeco.lang.enums.LanguageNodes;
 import de.articdive.townyeco.objects.abstractions.TEShop;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -101,6 +100,42 @@ public class MessageWorker {
 		sender.sendMessage(
 				MessageHelper.finalizeMessage(
 						PlaceHolderHelper.replacePlaceHolders(LanguageHandler.getString(LanguageNodes.COMMANDS_TOWNYECO_OPTIONS_LANGUAGE, language), language)
+				)
+		);
+	}
+
+	public static void sendMainCommandOptionsLanguageInvalidMessage(CommandSender sender, String input) {
+		Language language = LanguageHandler.getPluginLanguage();
+		if (sender instanceof Player) {
+			language = HibernateDatabase.getLanguageByPlayer((Player) sender);
+		}
+		sender.sendMessage(
+				MessageHelper.finalizeMessage(
+						PlaceHolderHelper.replacePlaceHolders(LanguageHandler.getString(LanguageNodes.COMMANDS_TOWNYECO_OPTIONS_LANGUAGE_INVALID, language), language, input)
+				)
+		);
+	}
+
+	public static void sendMainCommandOptionsLanguageSuccessfulMessage(CommandSender sender) {
+		Language language = LanguageHandler.getPluginLanguage();
+		if (sender instanceof Player) {
+			language = HibernateDatabase.getLanguageByPlayer((Player) sender);
+		}
+		sender.sendMessage(
+				MessageHelper.finalizeMessage(
+						PlaceHolderHelper.replacePlaceHolders(LanguageHandler.getString(LanguageNodes.COMMANDS_TOWNYECO_OPTIONS_LANGUAGE_SUCCESSFUL, language), language)
+				)
+		);
+	}
+
+	public static void sendConsoleNotAvailableMessage(CommandSender sender) {
+		Language language = LanguageHandler.getPluginLanguage();
+		if (sender instanceof Player) {
+			language = HibernateDatabase.getLanguageByPlayer((Player) sender);
+		}
+		sender.sendMessage(
+				MessageHelper.finalizeMessage(
+						PlaceHolderHelper.replacePlaceHolders(LanguageHandler.getString(LanguageNodes.COMMANDS_CONSOLE_NOT_AVAILABLE, language), language)
 				)
 		);
 	}
